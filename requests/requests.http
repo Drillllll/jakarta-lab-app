@@ -22,7 +22,7 @@ Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0g
 Content-Disposition: form-data; name="picture"; filename="hero.jpg"
 Content-Type: image/jpeg
 
-< ./Thief.jpg
+< ./Thief1.jpg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 ### PUT not exisitng player picture
@@ -33,7 +33,7 @@ Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0g
 Content-Disposition: form-data; name="picture"; filename="hero.jpg"
 Content-Type: image/jpeg
 
-< ./Thief.jpg
+< ./Thief1.jpg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW-
 
 ### GET existing player's picture
