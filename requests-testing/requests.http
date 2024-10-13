@@ -1,0 +1,68 @@
+### GET request to example server
+GET https://examples.http-client.intellij.net/get
+    ?generated-in=IntelliJ IDEA
+
+
+# PLAYER
+
+### GET all players
+GET http://localhost:9080/jakarta-lab-app/api/players
+
+### GET not existing player
+GET http://localhost:9080/jakarta-lab-app/api/players/8c8e963b-90c7-4275-8a6a-131577c88543
+
+### GET existing player
+GET http://localhost:9080/jakarta-lab-app/api/players/88dd8d51-8456-42ce-b6a0-61b2ed3e5e21
+
+### PUT exising player picture
+PUT http://localhost:9080/jakarta-lab-app/api/players/88dd8d51-8456-42ce-b6a0-61b2ed3e5e21/picture
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="picture"; filename="hero.jpg"
+Content-Type: image/jpeg
+
+< ./Thief.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### PUT not exisitng player picture
+PUT http://localhost:9080/jakarta-lab-app/api/players/ad516a5d-b05d-4097-a17f-8a135dbc40c4/picture
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="picture"; filename="hero.jpg"
+Content-Type: image/jpeg
+
+< ./Thief.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW-
+
+### GET existing player's picture
+GET http://localhost:9080/jakarta-lab-app/api/players/88dd8d51-8456-42ce-b6a0-61b2ed3e5e21/picture
+
+### GET exisitng player's not existing picture
+GET http://localhost:9080/jakarta-lab-app/api/players/d59d1288-b330-43f5-b519-3537c7b84806/picture
+
+### DELETE existing player's existing picture
+DELETE http://localhost:9080/jakarta-lab-app/api/players/88dd8d51-8456-42ce-b6a0-61b2ed3e5e21/picture
+
+### DELETE not existing player's picture
+DELETE http://localhost:9080/jakarta-lab-app/api/players/ad516a5d-b05d-4097-a17f-8a135dbc40c4/picture
+
+### PUT new player
+PUT http://localhost:9080/jakarta-lab-app/api/players/391a9234-d715-4feb-8624-ae9cebd0dbe4
+Content-Type: application/json
+
+{
+  "login": "vegabond@game.com",
+  "username": "V3gaBOND",
+  "birthDate": "1990-01-01",
+  "heroName": "SneakyThief",
+  "password": "Shhhh!!!Quiet"
+}
+
+### GET created player
+GET http://localhost:9080/jakarta-lab-app/api/players/391a9234-d715-4feb-8624-ae9cebd0dbe4
+
+###
+# DELETE created player (not implemented) will have to delete all other connected entities
+# DELETE http://localhost:9080/jakarta-lab-app/api/players/391a9234-d715-4feb-8624-ae9cebd0dbe4
