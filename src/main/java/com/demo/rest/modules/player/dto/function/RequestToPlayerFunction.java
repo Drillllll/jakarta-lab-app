@@ -1,7 +1,7 @@
-package com.demo.rest.player.dto.function;
+package com.demo.rest.modules.player.dto.function;
 
-import com.demo.rest.player.dto.PutPlayerRequest;
-import com.demo.rest.player.entity.Player;
+import com.demo.rest.modules.player.dto.PutPlayerRequest;
+import com.demo.rest.modules.player.entity.Player;
 
 import java.util.UUID;
 import java.util.function.BiFunction;

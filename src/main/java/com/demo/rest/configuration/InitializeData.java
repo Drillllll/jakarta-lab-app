@@ -1,7 +1,7 @@
 package com.demo.rest.configuration;
 
-import com.demo.rest.player.entity.Player;
-import com.demo.rest.player.service.PlayerService;
+import com.demo.rest.modules.player.entity.Player;
+import com.demo.rest.modules.player.service.PlayerService;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;

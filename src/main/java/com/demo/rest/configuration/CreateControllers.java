@@ -1,8 +1,8 @@
 package com.demo.rest.configuration;
 
 import com.demo.rest.helpers.DtoFunctionFactory;
-import com.demo.rest.player.controller.implementation.PlayerControllerBasic;
-import com.demo.rest.player.service.PlayerService;
+import com.demo.rest.modules.player.controller.implementation.PlayerControllerBasic;
+import com.demo.rest.modules.player.service.PlayerService;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 

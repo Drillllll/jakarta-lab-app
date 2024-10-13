@@ -1,8 +1,8 @@
-package com.demo.rest.player.repository.implementation;
+package com.demo.rest.modules.player.repository.implementation;
 
 import com.demo.rest.datastore.DataStore;
-import com.demo.rest.player.entity.Player;
-import com.demo.rest.player.repository.api.PlayerRepository;
+import com.demo.rest.modules.player.entity.Player;
+import com.demo.rest.modules.player.repository.api.PlayerRepository;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,8 +1,8 @@
-package com.demo.rest.player.controller.api;
+package com.demo.rest.modules.player.controller.api;
 
-import com.demo.rest.player.dto.GetPlayerResponse;
-import com.demo.rest.player.dto.GetPlayersResponse;
-import com.demo.rest.player.dto.PutPlayerRequest;
+import com.demo.rest.modules.player.dto.GetPlayerResponse;
+import com.demo.rest.modules.player.dto.GetPlayersResponse;
+import com.demo.rest.modules.player.dto.PutPlayerRequest;
 
 import java.io.InputStream;
 import java.util.UUID;

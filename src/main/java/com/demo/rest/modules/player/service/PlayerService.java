@@ -1,9 +1,9 @@
-package com.demo.rest.player.service;
+package com.demo.rest.modules.player.service;
 
 import com.demo.rest.controller.servlet.exception.NotFoundException;
 import com.demo.rest.crypto.Pbkdf2PasswordHash;
-import com.demo.rest.player.entity.Player;
-import com.demo.rest.player.repository.api.PlayerRepository;
+import com.demo.rest.modules.player.entity.Player;
+import com.demo.rest.modules.player.repository.api.PlayerRepository;
 
 import java.io.IOException;
 import java.io.InputStream;

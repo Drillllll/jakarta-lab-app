@@ -1,13 +1,13 @@
-package com.demo.rest.player.controller.implementation;
+package com.demo.rest.modules.player.controller.implementation;
 
 import com.demo.rest.controller.servlet.exception.BadRequestException;
 import com.demo.rest.controller.servlet.exception.NotFoundException;
 import com.demo.rest.helpers.DtoFunctionFactory;
-import com.demo.rest.player.controller.api.PlayerController;
-import com.demo.rest.player.dto.GetPlayerResponse;
-import com.demo.rest.player.dto.GetPlayersResponse;
-import com.demo.rest.player.dto.PutPlayerRequest;
-import com.demo.rest.player.service.PlayerService;
+import com.demo.rest.modules.player.controller.api.PlayerController;
+import com.demo.rest.modules.player.dto.GetPlayerResponse;
+import com.demo.rest.modules.player.dto.GetPlayersResponse;
+import com.demo.rest.modules.player.dto.PutPlayerRequest;
+import com.demo.rest.modules.player.service.PlayerService;
 
 import java.io.InputStream;
 import java.util.UUID;

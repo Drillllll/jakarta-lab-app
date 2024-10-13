@@ -5,6 +5,7 @@ import com.demo.rest.helpers.CloningUtility;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 
+//using annotation does not allow configuring order
 //@WebListener
 public class CreateDataSource implements ServletContextListener {
 

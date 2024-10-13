@@ -1,4 +1,4 @@
-package com.demo.rest.player.dto;
+package com.demo.rest.modules.player.dto;
 
 import lombok.*;
 

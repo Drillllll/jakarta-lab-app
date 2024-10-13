@@ -17,10 +17,6 @@ import java.io.*;
 public class CloningUtility {
     /**
      * Created deep copy of provided object using serialization.
-     *
-     * @param object object to be cloned
-     * @param <T>    type of the object
-     * @return deep copy of the object
      */
     @SneakyThrows
     @SuppressWarnings("unchecked")
@@ -32,12 +28,6 @@ public class CloningUtility {
 
     }
 
-    /**
-     * @param object object to be cloned
-     *               * @param <T>    type of the object
-     * @return close {@link ByteArrayOutputStream} with serialized object
-     * @throws IOException on IO error
-     */
     private <T extends Serializable> ByteArrayOutputStream writeObject(T object) throws IOException {
         try (ByteArrayOutputStream os = new ByteArrayOutputStream();
              ObjectOutputStream oos = new ObjectOutputStream(os)) {

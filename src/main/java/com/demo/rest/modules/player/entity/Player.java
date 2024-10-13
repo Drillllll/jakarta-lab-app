@@ -1,4 +1,4 @@
-package com.demo.rest.player.entity;
+package com.demo.rest.modules.player.entity;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;

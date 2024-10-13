@@ -1,7 +1,7 @@
 package com.demo.rest.datastore;
 
 import com.demo.rest.helpers.CloningUtility;
-import com.demo.rest.player.entity.Player;
+import com.demo.rest.modules.player.entity.Player;
 import lombok.extern.java.Log;
 
 import java.util.HashSet;

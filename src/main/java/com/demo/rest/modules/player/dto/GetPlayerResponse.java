@@ -1,8 +1,9 @@
-package com.demo.rest.player.dto;
+package com.demo.rest.modules.player.dto;
 
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -11,13 +12,13 @@ import java.time.LocalDate;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
 @EqualsAndHashCode
-public class PutPlayerRequest {
+public class GetPlayerResponse {
+
+    private UUID id;
 
     private String login;
     private String username;
     private LocalDate birthDate;
 
     private String heroName;
-
-    private String password;
 }

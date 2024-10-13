@@ -1,7 +1,7 @@
 package com.demo.rest.controller.servlet;
 
-import com.demo.rest.player.controller.api.PlayerController;
-import com.demo.rest.player.dto.PutPlayerRequest;
+import com.demo.rest.modules.player.controller.api.PlayerController;
+import com.demo.rest.modules.player.dto.PutPlayerRequest;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.servlet.ServletException;
@@ -34,9 +34,6 @@ public class ApiServlet extends HttpServlet {
      */
     public static final class Paths {
 
-        /**
-         * All API operations. Version v1 will be used to distinguish from other implementations.
-         */
         public static final String API = "/api";
 
     }
@@ -108,6 +105,7 @@ public class ApiServlet extends HttpServlet {
         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
 
+    @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = parseRequestPath(request);
         String servletPath = request.getServletPath();
@@ -126,14 +124,7 @@ public class ApiServlet extends HttpServlet {
         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
 
-    /**
-     * Called by the server (via the <code>service</code> method) to allow a servlet to handle a PATCH request.
-     *
-     * @param request  {@link HttpServletRequest} object that contains the request the client made of the servlet
-     * @param response {@link HttpServletResponse} object that contains the response the servlet returns to the client
-     * @throws ServletException if the request for the PATCH cannot be handled
-     * @throws IOException      if an input or output error occurs while the servlet is handling the PATCH request
-     */
+
     @SuppressWarnings("RedundantThrows")
     protected void doPatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -162,10 +153,6 @@ public class ApiServlet extends HttpServlet {
 
     /**
      * Extracts UUID from path using provided pattern. Pattern needs to contain UUID in first regular expression group.
-     *
-     * @param pattern regular expression pattern with
-     * @param path    request path containing UUID
-     * @return extracted UUID
      */
     private static UUID extractUuid(Pattern pattern, String path) {
         Matcher matcher = pattern.matcher(path);
@@ -177,9 +164,6 @@ public class ApiServlet extends HttpServlet {
 
     /**
      * Gets path info from the request and returns it. No null is returned, instead empty string is used.
-     *
-     * @param request original servlet request
-     * @return path info (not null)
      */
     private String parseRequestPath(HttpServletRequest request) {
         String path = request.getPathInfo();
@@ -190,10 +174,6 @@ public class ApiServlet extends HttpServlet {
     /**
      * Creates URL using host, port and context root from servlet request and any number of path elements. If any of
      * path elements starts or ends with '/' character, that character is removed.
-     *
-     * @param request servlet request
-     * @param paths   any (can be none) number of path elements
-     * @return created url
      */
     public static String createUrl(HttpServletRequest request, String... paths) {
         StringBuilder builder = new StringBuilder();

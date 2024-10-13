@@ -2,9 +2,9 @@ package com.demo.rest.configuration;
 
 import com.demo.rest.crypto.Pbkdf2PasswordHash;
 import com.demo.rest.datastore.DataStore;
-import com.demo.rest.player.repository.api.PlayerRepository;
-import com.demo.rest.player.repository.implementation.PlayerRepositoryInMemory;
-import com.demo.rest.player.service.PlayerService;
+import com.demo.rest.modules.player.repository.api.PlayerRepository;
+import com.demo.rest.modules.player.repository.implementation.PlayerRepositoryInMemory;
+import com.demo.rest.modules.player.service.PlayerService;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
