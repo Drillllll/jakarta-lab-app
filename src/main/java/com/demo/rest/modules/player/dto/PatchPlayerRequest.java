@@ -2,6 +2,8 @@ package com.demo.rest.modules.player.dto;
 
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Builder
@@ -12,7 +14,8 @@ import lombok.*;
 public class PatchPlayerRequest {
 
     private String username;
-
+    private String login;
+    private LocalDate birthDate;
     private String heroName;
 
 }

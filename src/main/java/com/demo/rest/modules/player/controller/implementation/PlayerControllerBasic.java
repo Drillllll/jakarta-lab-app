@@ -6,6 +6,7 @@ import com.demo.rest.helpers.DtoFunctionFactory;
 import com.demo.rest.modules.player.controller.api.PlayerController;
 import com.demo.rest.modules.player.dto.GetPlayerResponse;
 import com.demo.rest.modules.player.dto.GetPlayersResponse;
+import com.demo.rest.modules.player.dto.PatchPlayerRequest;
 import com.demo.rest.modules.player.dto.PutPlayerRequest;
 import com.demo.rest.modules.player.service.PlayerService;
 
@@ -86,6 +87,17 @@ public class PlayerControllerBasic implements PlayerController {
                 }
         );
     }
+
+    @Override
+    public void patchPlayer(UUID id, PatchPlayerRequest request) {
+        service.find(id).ifPresentOrElse(
+                entity -> service.update(factory.updatePlayer().apply(entity, request)),
+                () -> {
+                    throw new NotFoundException();
+                }
+        );
+    }
+
 
 
 }

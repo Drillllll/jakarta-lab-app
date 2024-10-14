@@ -2,6 +2,7 @@ package com.demo.rest.modules.player.controller.api;
 
 import com.demo.rest.modules.player.dto.GetPlayerResponse;
 import com.demo.rest.modules.player.dto.GetPlayersResponse;
+import com.demo.rest.modules.player.dto.PatchPlayerRequest;
 import com.demo.rest.modules.player.dto.PutPlayerRequest;
 
 import java.io.InputStream;
@@ -22,4 +23,8 @@ public interface PlayerController {
     void putPicture(UUID id, InputStream portrait);
 
     void deletePicture(UUID id);
+
+    void patchPlayer(UUID id, PatchPlayerRequest request);
+
+
 }

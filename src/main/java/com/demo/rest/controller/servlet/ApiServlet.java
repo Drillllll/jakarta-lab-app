@@ -1,6 +1,7 @@
 package com.demo.rest.controller.servlet;
 
 import com.demo.rest.modules.player.controller.api.PlayerController;
+import com.demo.rest.modules.player.dto.PatchPlayerRequest;
 import com.demo.rest.modules.player.dto.PutPlayerRequest;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
@@ -127,6 +128,16 @@ public class ApiServlet extends HttpServlet {
 
     @SuppressWarnings("RedundantThrows")
     protected void doPatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String path = parseRequestPath(request);
+        String servletPath = request.getServletPath();
+        if (Paths.API.equals(servletPath)) {
+            if (path.matches(Patterns.PLAYER.pattern())) {
+                UUID uuid = extractUuid(Patterns.PLAYER, path);
+                playerController.patchPlayer(uuid, jsonb.fromJson(request.getReader(), PatchPlayerRequest.class));
+                return;
+            }
+        }
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 
     }
 

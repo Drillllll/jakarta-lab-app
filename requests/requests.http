@@ -60,6 +60,18 @@ Content-Type: application/json
   "password": "Shhhh!!!Quiet"
 }
 
+### PATCH new player
+PATCH http://localhost:9080/jakarta-lab-app/api/players/391a9234-d715-4feb-8624-ae9cebd0dbe4
+Content-Type: application/json
+
+{
+  "login": "vegabond@game.com",
+  "username": "V3gaBOND",
+  "birthDate": "1990-01-01",
+  "heroName": "SneakierThief"
+}
+
+
 ### GET created player
 GET http://localhost:9080/jakarta-lab-app/api/players/391a9234-d715-4feb-8624-ae9cebd0dbe4
 

@@ -139,4 +139,9 @@ public class PlayerService {
     public void delete(UUID id) {
         repository.delete(repository.find(id).orElseThrow());
     }
+
+    public void update(Player player) {
+       repository.update(player);
+    }
+
 }
