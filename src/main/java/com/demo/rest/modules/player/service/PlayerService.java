@@ -4,6 +4,9 @@ import com.demo.rest.controller.servlet.exception.NotFoundException;
 import com.demo.rest.crypto.Pbkdf2PasswordHash;
 import com.demo.rest.modules.player.entity.Player;
 import com.demo.rest.modules.player.repository.api.PlayerRepository;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +19,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@ApplicationScoped
+@NoArgsConstructor(force = true)
 public class PlayerService {
 
     private final PlayerRepository repository;
@@ -23,9 +28,11 @@ public class PlayerService {
     private final Pbkdf2PasswordHash passwordHash;
 
     // [pictures-in-files] get rid of
+    private final String pictureDirPath = "pictureDirectory";
     private final Path pictureDirectory;
 
-    public PlayerService(PlayerRepository repository, Pbkdf2PasswordHash passwordHash, String pictureDirPath) {
+    @Inject
+    public PlayerService(PlayerRepository repository, Pbkdf2PasswordHash passwordHash) {
         this.repository = repository;
         this.passwordHash = passwordHash;
 

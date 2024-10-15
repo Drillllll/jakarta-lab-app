@@ -9,15 +9,19 @@ import com.demo.rest.modules.player.dto.GetPlayersResponse;
 import com.demo.rest.modules.player.dto.PatchPlayerRequest;
 import com.demo.rest.modules.player.dto.PutPlayerRequest;
 import com.demo.rest.modules.player.service.PlayerService;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
 
 import java.io.InputStream;
 import java.util.UUID;
 
+@RequestScoped
 public class PlayerControllerBasic implements PlayerController {
 
     private final PlayerService service;
     private final DtoFunctionFactory factory;
 
+    @Inject
     public PlayerControllerBasic(PlayerService playerService, DtoFunctionFactory factory) {
         this.service = playerService;
         this.factory = factory;

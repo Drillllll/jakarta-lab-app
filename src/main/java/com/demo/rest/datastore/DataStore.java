@@ -2,7 +2,10 @@ package com.demo.rest.datastore;
 
 import com.demo.rest.helpers.CloningUtility;
 import com.demo.rest.modules.player.entity.Player;
+import lombok.NoArgsConstructor;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.extern.java.Log;
+import jakarta.inject.Inject;
 
 import java.util.HashSet;
 import java.util.List;
@@ -10,12 +13,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Log
+@ApplicationScoped
+@NoArgsConstructor(force = true)
 public class DataStore {
 
     private final CloningUtility cloningUtility;
 
     private final Set<Player> players = new HashSet<>();
 
+    @Inject
     public DataStore(CloningUtility cloningUtility) {
         this.cloningUtility = cloningUtility;
     }

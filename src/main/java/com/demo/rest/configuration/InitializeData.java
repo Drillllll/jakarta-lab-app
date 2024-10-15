@@ -2,10 +2,12 @@ package com.demo.rest.configuration;
 
 import com.demo.rest.modules.player.entity.Player;
 import com.demo.rest.modules.player.service.PlayerService;
-import jakarta.servlet.ServletContextEvent;
-import jakarta.servlet.ServletContextListener;
-import jakarta.servlet.annotation.WebListener;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.control.RequestContextController;
+import jakarta.inject.Inject;
 import lombok.SneakyThrows;
+import jakarta.enterprise.context.Initialized;
+import jakarta.enterprise.event.Observes;
 
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -14,15 +16,27 @@ import java.util.UUID;
 
 
 
-@WebListener
-public class InitializeData implements ServletContextListener {
+@ApplicationScoped
+public class InitializeData {
 
-    PlayerService playerService;
+    private final PlayerService playerService;
 
-    @Override
-    public void contextInitialized(ServletContextEvent event) {
-        playerService = (PlayerService) event.getServletContext().getAttribute("playerService");
+    /**
+     * The CDI container provides a built-in instance of {@link RequestContextController} that is dependent scoped for
+     * the purposes of activating and deactivating.
+     */
+    private final RequestContextController requestContextController;
 
+    @Inject
+    public InitializeData(
+            PlayerService playerService,
+            RequestContextController requestContextController
+    ) {
+        this.playerService = playerService;
+        this.requestContextController = requestContextController;
+    }
+
+    public void contextInitialized(@Observes @Initialized(ApplicationScoped.class) Object init) {
         init();
     }
 
@@ -32,6 +46,9 @@ public class InitializeData implements ServletContextListener {
      */
     @SneakyThrows
     private void init() {
+
+        requestContextController.activate();// start request scope in order to inject request scoped repositories
+
         Player player1 = Player.builder()
                 .id(UUID.fromString("88dd8d51-8456-42ce-b6a0-61b2ed3e5e21"))
                 .login("adventurer@game.com")
@@ -72,6 +89,8 @@ public class InitializeData implements ServletContextListener {
         playerService.create(player2);
         playerService.create(player3);
         playerService.create(player4);
+
+        requestContextController.deactivate();
 
     }
 

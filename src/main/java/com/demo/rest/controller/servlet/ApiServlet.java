@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.inject.Inject;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -27,7 +28,13 @@ import java.util.regex.Pattern;
 @MultipartConfig(maxFileSize = 200 * 1024)
 public class ApiServlet extends HttpServlet {
 
-    private PlayerController playerController;
+    private final PlayerController playerController;
+
+
+    @Inject
+    public ApiServlet(PlayerController playerController) {
+        this.playerController = playerController;
+    }
 
 
     /**
@@ -69,12 +76,6 @@ public class ApiServlet extends HttpServlet {
         } else {
             super.service(request, response);
         }
-    }
-
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        playerController = (PlayerController) getServletContext().getAttribute("playerController");
     }
 
     @SuppressWarnings("RedundantThrows")

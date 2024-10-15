@@ -2,6 +2,7 @@ package com.demo.rest.helpers;
 
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
+import jakarta.enterprise.context.Dependent;
 
 import java.io.*;
 
@@ -14,6 +15,7 @@ import java.io.*;
  * without external libraries is serialization mechanism.
  */
 @Log
+@Dependent
 public class CloningUtility {
     /**
      * Created deep copy of provided object using serialization.

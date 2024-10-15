@@ -1,6 +1,7 @@
 package com.demo.rest.crypto;
 
 import lombok.SneakyThrows;
+import jakarta.enterprise.context.Dependent;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -13,6 +14,7 @@ import java.util.Base64;
  * Components responsible for hashing password. This implementation uses Password-Based Key Derivation Function 2
  * (PBKDF2) with SHA256 hash algorithm used in Hash-based Message Authentication Code (HMAC).
  */
+@Dependent
 public class Pbkdf2PasswordHash {
     private static final String ALGORITHM = "PBKDF2WithHmacSHA256";
 

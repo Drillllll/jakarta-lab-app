@@ -3,15 +3,19 @@ package com.demo.rest.modules.player.repository.implementation;
 import com.demo.rest.datastore.DataStore;
 import com.demo.rest.modules.player.entity.Player;
 import com.demo.rest.modules.player.repository.api.PlayerRepository;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@RequestScoped
 public class PlayerRepositoryInMemory implements PlayerRepository {
 
     private final DataStore store;
 
+    @Inject
     public PlayerRepositoryInMemory(DataStore store) {
         this.store = store;
     }
