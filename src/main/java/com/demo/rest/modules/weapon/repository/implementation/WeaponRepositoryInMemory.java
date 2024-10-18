@@ -53,14 +53,14 @@ public class WeaponRepositoryInMemory implements WeaponRepository {
     @Override
     public List<Weapon> findAllByPlayer(Player player) {
         return store.findAllWeapons().stream()
-                .filter(weapon -> player.getId().equals(weapon.getPlayer().getId()))
+                .filter(weapon -> player.equals(weapon.getPlayer()))
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<Weapon> findAllByWeaponType(WeaponType weaponType) {
         return store.findAllWeapons().stream()
-                .filter(weapon -> weaponType.getId().equals(weapon.getWeaponType().getId()))
+                .filter(weapon -> weaponType.equals(weapon.getWeaponType()))
                 .collect(Collectors.toList());
     }
 }

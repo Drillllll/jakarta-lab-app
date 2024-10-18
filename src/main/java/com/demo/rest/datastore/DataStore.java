@@ -65,12 +65,14 @@ public class DataStore {
         if (weapons.stream().anyMatch(weapon -> weapon.getId().equals(value.getId()))) {
             throw new IllegalArgumentException("The weapon id \"%s\" is not unique".formatted(value.getId()));
         }
-        weapons.add(cloningUtility.clone(value));
+        Weapon entity = cloneWithRelationShip(value);
+        weapons.add(entity);
     }
 
     public synchronized void updateWeapon(Weapon value) throws IllegalArgumentException {
+        Weapon entity = cloneWithRelationShip(value);
         if (weapons.removeIf(weapon -> weapon.getId().equals(value.getId()))) {
-            weapons.add(cloningUtility.clone(value));
+            weapons.add(entity);
         } else {
             throw new IllegalArgumentException("The weapon with id \"%s\" does not exist".formatted(value.getId()));
         }
@@ -97,6 +99,30 @@ public class DataStore {
         } else {
             throw new IllegalArgumentException("The weapon type with id \"%s\" does not exist".formatted(value.getId()));
         }
+    }
+
+    private Weapon cloneWithRelationShip(Weapon value) {
+        Weapon entity = cloningUtility.clone(value);
+
+        if (entity.getPlayer() != null) {
+            entity.setPlayer(
+                    players.stream()
+                            .filter(player -> player.getId().equals(value.getPlayer().getId()))
+                            .findFirst()
+                            .orElseThrow(() -> new IllegalArgumentException("No player with id \"%s\" found".formatted(value.getPlayer().getId())))
+            );
+        }
+
+        if (entity.getWeaponType() != null) {
+            entity.setWeaponType(
+                    weaponTypes.stream()
+                            .filter(weaponType -> weaponType.getId().equals(value.getWeaponType().getId()))
+                            .findFirst()
+                            .orElseThrow(() -> new IllegalArgumentException("No weapon type with id \"%s\" found".formatted(value.getWeaponType().getId())))
+            );
+        }
+
+        return entity;
     }
 
 

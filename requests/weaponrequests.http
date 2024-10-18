@@ -42,4 +42,4 @@ GET http://localhost:9080/jakarta-lab-app/api/weapons/73e54c57-0e7d-4f03-bcd2-53
 GET http://localhost:9080/jakarta-lab-app/api/players/665e4aba-0640-49c2-b71f-4ddf1f9674ba/weapons
 
 ### GET all weapons of a weapon type
-GET http://localhost:9080/jakarta-lab-app/api/weapontypes/ef47b366-7352-417f-a232-c530e65d7226/weapons
+GET http://localhost:9080/jakarta-lab-app/api/weapontypes/cdfbd2ad-7c1e-48d7-9f91-2d6d0c089b60/weapons
