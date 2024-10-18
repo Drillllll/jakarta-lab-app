@@ -2,6 +2,11 @@ package com.demo.rest.configuration;
 
 import com.demo.rest.modules.player.entity.Player;
 import com.demo.rest.modules.player.service.PlayerService;
+import com.demo.rest.modules.weapon.entity.Weapon;
+import com.demo.rest.modules.weapon.service.WeaponService;
+import com.demo.rest.modules.weapontype.entity.DamageType;
+import com.demo.rest.modules.weapontype.entity.WeaponType;
+import com.demo.rest.modules.weapontype.service.WeaponTypeService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.control.RequestContextController;
 import jakarta.inject.Inject;
@@ -13,13 +18,12 @@ import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.UUID;
 
-
-
-
 @ApplicationScoped
 public class InitializeData {
 
     private final PlayerService playerService;
+    private final WeaponService weaponService;
+    private final WeaponTypeService weaponTypeService;
 
     /**
      * The CDI container provides a built-in instance of {@link RequestContextController} that is dependent scoped for
@@ -30,10 +34,14 @@ public class InitializeData {
     @Inject
     public InitializeData(
             PlayerService playerService,
-            RequestContextController requestContextController
+            RequestContextController requestContextController,
+            WeaponService weaponService,
+            WeaponTypeService weaponTypeService
     ) {
         this.playerService = playerService;
         this.requestContextController = requestContextController;
+        this.weaponService = weaponService;
+        this.weaponTypeService = weaponTypeService;
     }
 
     public void contextInitialized(@Observes @Initialized(ApplicationScoped.class) Object init) {
@@ -49,7 +57,7 @@ public class InitializeData {
 
         requestContextController.activate();// start request scope in order to inject request scoped repositories
 
-        Player player1 = Player.builder()
+        Player warrior = Player.builder()
                 .id(UUID.fromString("88dd8d51-8456-42ce-b6a0-61b2ed3e5e21"))
                 .login("adventurer@game.com")
                 .password("iLoveKillingDragons&!")
@@ -58,7 +66,7 @@ public class InitializeData {
                 .heroName("Dragon Slayer")
                 .build();
 
-        Player player2 = Player.builder()
+        Player mage = Player.builder()
                 .id(UUID.fromString("d59d1288-b330-43f5-b519-3537c7b84806"))
                 .login("rpg-enjoyer@game.com")
                 .password("magicIsInTheAir123#!")
@@ -67,7 +75,7 @@ public class InitializeData {
                 .heroName("Powerful Mage")
                 .build();
 
-        Player player3 = Player.builder()
+        Player assassin = Player.builder()
                 .id(UUID.fromString("665e4aba-0640-49c2-b71f-4ddf1f9674ba"))
                 .login("swoard-to-the-throat@game.com")
                 .password("iWill!burry)YouALivE#")
@@ -76,7 +84,7 @@ public class InitializeData {
                 .heroName("Ruthless Assassin")
                 .build();
 
-        Player player4 = Player.builder()
+        Player archer = Player.builder()
                 .id(UUID.fromString("944cc65e-1942-4c8a-a12e-cfffeef94476"))
                 .login("one-shot-one-kill@game.com")
                 .password("aim!!+Twice#Shoot#Once")
@@ -85,10 +93,92 @@ public class InitializeData {
                 .heroName("Patient Archer")
                 .build();
 
-        playerService.create(player1);
-        playerService.create(player2);
-        playerService.create(player3);
-        playerService.create(player4);
+        playerService.create(warrior);
+        playerService.create(mage);
+        playerService.create(assassin);
+        playerService.create(archer);
+
+        WeaponType twoHandedSword = WeaponType.builder()
+                .id(UUID.fromString("ef47b366-7352-417f-a232-c530e65d7226"))
+                .name("Two Handed Sword")
+                .speed(2.0f)
+                .isTwoHanded(true)
+                .damageType(DamageType.PHYSICAL)
+                .build();
+
+        WeaponType wand = WeaponType.builder()
+                .id(UUID.fromString("97002bc4-474d-4559-b556-72ba0246eb27"))
+                .name("Wand")
+                .speed(3.0f)
+                .isTwoHanded(false)
+                .damageType(DamageType.MAGICAL)
+                .build();
+
+        WeaponType dagger = WeaponType.builder()
+                .id(UUID.fromString("6ddf3bcb-c004-48ab-9a58-747aaecbfa03"))
+                .name("Dagger")
+                .speed(6.0f)
+                .isTwoHanded(false)
+                .damageType(DamageType.PHYSICAL)
+                .build();
+
+        WeaponType bow = WeaponType.builder()
+                .id(UUID.fromString("cdfbd2ad-7c1e-48d7-9f91-2d6d0c089b60"))
+                .name("Bow")
+                .speed(4.0f)
+                .isTwoHanded(true)
+                .damageType(DamageType.PHYSICAL)
+                .build();
+
+        weaponTypeService.create(twoHandedSword);
+        weaponTypeService.create(wand);
+        weaponTypeService.create(dagger);
+        weaponTypeService.create(bow);
+
+        Weapon twoHandedSword1 = Weapon.builder()
+                .id(UUID.fromString("ae52c4e1-86ff-4cb9-909c-eea125c10a5f"))
+                .name("Sword of Tears")
+                .damage(54)
+                .weight(23)
+                .value(764)
+                .weaponType(twoHandedSword)
+                .player(warrior)
+                .build();
+
+        Weapon wand1 = Weapon.builder()
+                .id(UUID.fromString("a1e77f04-e157-470e-b775-097eb45f4139"))
+                .name("Wand of Power")
+                .damage(120)
+                .weight(2)
+                .value(1500)
+                .weaponType(wand)
+                .player(mage)
+                .build();
+
+        Weapon dagger1 = Weapon.builder()
+                .id(UUID.fromString("8e4bf5f0-91fa-442c-ab86-eb9901cf5362"))
+                .name("Dagger of Dreams")
+                .damage(60)
+                .weight(1)
+                .value(928)
+                .weaponType(dagger)
+                .player(assassin)
+                .build();
+
+        Weapon bow1 = Weapon.builder()
+                .id(UUID.fromString("eb8438cf-04dc-46d4-b80e-f10ac21e74ec"))
+                .name("Bow of The Hunt")
+                .damage(90)
+                .weight(5)
+                .value(1300)
+                .weaponType(bow)
+                .player(archer)
+                .build();
+
+        weaponService.create(twoHandedSword1);
+        weaponService.create(dagger1);
+        weaponService.create(bow1);
+        weaponService.create(wand1);
 
         requestContextController.deactivate();
 

@@ -3,8 +3,6 @@ GET https://examples.http-client.intellij.net/get
     ?generated-in=IntelliJ IDEA
 
 
-# PLAYER
-
 ### GET all players
 GET http://localhost:9080/jakarta-lab-app/api/players
 
@@ -71,10 +69,8 @@ Content-Type: application/json
   "heroName": "SneakierThief"
 }
 
-
 ### GET created player
 GET http://localhost:9080/jakarta-lab-app/api/players/391a9234-d715-4feb-8624-ae9cebd0dbe4
 
-###
-# DELETE created player (not implemented) will have to delete all other connected entities
+### DELETE created player (not implemented) will have to delete all other connected entities
 # DELETE http://localhost:9080/jakarta-lab-app/api/players/391a9234-d715-4feb-8624-ae9cebd0dbe4

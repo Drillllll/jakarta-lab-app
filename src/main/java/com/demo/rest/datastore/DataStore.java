@@ -2,6 +2,8 @@ package com.demo.rest.datastore;
 
 import com.demo.rest.helpers.CloningUtility;
 import com.demo.rest.modules.player.entity.Player;
+import com.demo.rest.modules.weapon.entity.Weapon;
+import com.demo.rest.modules.weapontype.entity.WeaponType;
 import lombok.NoArgsConstructor;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.extern.java.Log;
@@ -20,13 +22,15 @@ public class DataStore {
     private final CloningUtility cloningUtility;
 
     private final Set<Player> players = new HashSet<>();
+    private final Set<Weapon> weapons = new HashSet<>();
+    private final Set<WeaponType> weaponTypes = new HashSet<>();
 
     @Inject
     public DataStore(CloningUtility cloningUtility) {
         this.cloningUtility = cloningUtility;
     }
 
-    /** user */
+    /** player */
 
     public synchronized List<Player> findAllPlayers() {
         return players.stream()
@@ -48,4 +52,52 @@ public class DataStore {
             throw new IllegalArgumentException("The player with id \"%s\" does not exist".formatted(value.getId()));
         }
     }
+
+    /** weapon */
+
+    public synchronized List<Weapon> findAllWeapons() {
+        return weapons.stream()
+                .map(cloningUtility::clone)
+                .collect(Collectors.toList());
+    }
+
+    public synchronized void createWeapon(Weapon value) throws IllegalArgumentException {
+        if (weapons.stream().anyMatch(weapon -> weapon.getId().equals(value.getId()))) {
+            throw new IllegalArgumentException("The weapon id \"%s\" is not unique".formatted(value.getId()));
+        }
+        weapons.add(cloningUtility.clone(value));
+    }
+
+    public synchronized void updateWeapon(Weapon value) throws IllegalArgumentException {
+        if (weapons.removeIf(weapon -> weapon.getId().equals(value.getId()))) {
+            weapons.add(cloningUtility.clone(value));
+        } else {
+            throw new IllegalArgumentException("The weapon with id \"%s\" does not exist".formatted(value.getId()));
+        }
+    }
+
+    /** weapon type */
+
+    public synchronized List<WeaponType> findAllWeaponTypes() {
+        return weaponTypes.stream()
+                .map(cloningUtility::clone)
+                .collect(Collectors.toList());
+    }
+
+    public synchronized void createWeaponType(WeaponType value) throws IllegalArgumentException {
+        if (weaponTypes.stream().anyMatch(weaponType -> weaponType.getId().equals(value.getId()))) {
+            throw new IllegalArgumentException("The weapon type id \"%s\" is not unique".formatted(value.getId()));
+        }
+        weaponTypes.add(cloningUtility.clone(value));
+    }
+
+    public synchronized void updateWeaponType(WeaponType value) throws IllegalArgumentException {
+        if (weaponTypes.removeIf(weaponType -> weaponType.getId().equals(value.getId()))) {
+            weaponTypes.add(cloningUtility.clone(value));
+        } else {
+            throw new IllegalArgumentException("The weapon type with id \"%s\" does not exist".formatted(value.getId()));
+        }
+    }
+
+
 }

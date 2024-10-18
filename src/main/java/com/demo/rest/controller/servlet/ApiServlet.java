@@ -3,6 +3,12 @@ package com.demo.rest.controller.servlet;
 import com.demo.rest.modules.player.controller.api.PlayerController;
 import com.demo.rest.modules.player.dto.PatchPlayerRequest;
 import com.demo.rest.modules.player.dto.PutPlayerRequest;
+import com.demo.rest.modules.weapon.controller.api.WeaponController;
+import com.demo.rest.modules.weapon.dto.PatchWeaponRequest;
+import com.demo.rest.modules.weapon.dto.PutWeaponRequest;
+import com.demo.rest.modules.weapontype.controller.api.WeaponTypeController;
+import com.demo.rest.modules.weapontype.dto.PatchWeaponTypeRequest;
+import com.demo.rest.modules.weapontype.dto.PutWeaponTypeRequest;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.servlet.ServletException;
@@ -29,11 +35,15 @@ import java.util.regex.Pattern;
 public class ApiServlet extends HttpServlet {
 
     private final PlayerController playerController;
+    private final WeaponController weaponController;
+    private final WeaponTypeController weaponTypeController;
 
 
     @Inject
-    public ApiServlet(PlayerController playerController) {
+    public ApiServlet(PlayerController playerController, WeaponController weaponController, WeaponTypeController weaponTypeController) {
         this.playerController = playerController;
+        this.weaponController = weaponController;
+        this.weaponTypeController = weaponTypeController;
     }
 
 
@@ -54,11 +64,14 @@ public class ApiServlet extends HttpServlet {
         private static final Pattern UUID = Pattern.compile("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}");
 
         public static final Pattern PLAYERS = Pattern.compile("/players/?");
-
-        //public static final Pattern PLAYER = Pattern.compile("/players/(%s)".formatted(UUID.pattern()));
         public static final Pattern PLAYER = Pattern.compile("/players/(%s)".formatted(UUID.pattern()));
-
         public static final Pattern PLAYER_PICTURE = Pattern.compile("/players/(%s)/picture".formatted(UUID.pattern()));
+
+        public static final Pattern WEAPONS = Pattern.compile("/weapons/?");
+        public static final Pattern WEAPON = Pattern.compile("/weapons/(%s)".formatted(UUID.pattern()));
+
+        public static final Pattern WEAPON_TYPES = Pattern.compile("/weapontypes/?");
+        public static final Pattern WEAPON_TYPE = Pattern.compile("/weapontypes/(%s)".formatted(UUID.pattern()));
 
     }
 
@@ -84,12 +97,13 @@ public class ApiServlet extends HttpServlet {
         String path = parseRequestPath(request);
         String servletPath = request.getServletPath();
         if (Paths.API.equals(servletPath)) {
+            // player
             if (path.matches(Patterns.PLAYERS.pattern())) {
                 response.setContentType("application/json");
                 response.getWriter().write(jsonb.toJson(playerController.getPlayers()));
                 return;
             }
-            if (path.matches(Patterns.PLAYER.pattern())) {
+            else if (path.matches(Patterns.PLAYER.pattern())) {
                 response.setContentType("application/json");
                 UUID uuid = extractUuid(Patterns.PLAYER, path);
                 response.getWriter().write(jsonb.toJson(playerController.getPlayer(uuid)));
@@ -103,6 +117,30 @@ public class ApiServlet extends HttpServlet {
                 response.getOutputStream().write(picture);
                 return;
             }
+            // weapon
+            if (path.matches(Patterns.WEAPONS.pattern())) {
+                response.setContentType("application/json");
+                response.getWriter().write(jsonb.toJson(weaponController.getWeapons()));
+                return;
+            }
+            else if (path.matches(Patterns.WEAPON.pattern())) {
+                response.setContentType("application/json");
+                UUID uuid = extractUuid(Patterns.WEAPON, path);
+                response.getWriter().write(jsonb.toJson(weaponController.getWeapon(uuid)));
+                return;
+            }
+            // weapon type
+            if (path.matches(Patterns.WEAPON_TYPES.pattern())) {
+                response.setContentType("application/json");
+                response.getWriter().write(jsonb.toJson(weaponTypeController.getWeaponTypes()));
+                return;
+            }
+            else if (path.matches(Patterns.WEAPON_TYPE.pattern())) {
+                response.setContentType("application/json");
+                UUID uuid = extractUuid(Patterns.WEAPON_TYPE, path);
+                response.getWriter().write(jsonb.toJson(weaponTypeController.getWeaponType(uuid)));
+                return;
+            }
         }
         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
@@ -112,6 +150,7 @@ public class ApiServlet extends HttpServlet {
         String path = parseRequestPath(request);
         String servletPath = request.getServletPath();
         if (Paths.API.equals(servletPath)) {
+            // player
             if (path.matches(Patterns.PLAYER.pattern())) {
                 UUID uuid = extractUuid(Patterns.PLAYER, path);
                 playerController.putPlayer(uuid, jsonb.fromJson(request.getReader(), PutPlayerRequest.class));
@@ -120,6 +159,20 @@ public class ApiServlet extends HttpServlet {
             } else if (path.matches(Patterns.PLAYER_PICTURE.pattern())) {
                 UUID uuid = extractUuid(Patterns.PLAYER_PICTURE, path);
                 playerController.putPicture(uuid, request.getPart("picture").getInputStream());
+                return;
+            }
+            // weapon
+            else if (path.matches(Patterns.WEAPON.pattern())) {
+                UUID uuid = extractUuid(Patterns.WEAPON, path);
+                weaponController.putWeapon(uuid, jsonb.fromJson(request.getReader(), PutWeaponRequest.class));
+                response.addHeader("Location", createUrl(request, Paths.API, "weapons", uuid.toString()));
+                return;
+            }
+            // weapon Type
+            else if (path.matches(Patterns.WEAPON_TYPE.pattern())) {
+                UUID uuid = extractUuid(Patterns.WEAPON_TYPE, path);
+                weaponTypeController.putWeaponType(uuid, jsonb.fromJson(request.getReader(), PutWeaponTypeRequest.class));
+                response.addHeader("Location", createUrl(request, Paths.API, "weapon_types", uuid.toString()));
                 return;
             }
         }
@@ -132,9 +185,22 @@ public class ApiServlet extends HttpServlet {
         String path = parseRequestPath(request);
         String servletPath = request.getServletPath();
         if (Paths.API.equals(servletPath)) {
+            // PLayer
             if (path.matches(Patterns.PLAYER.pattern())) {
                 UUID uuid = extractUuid(Patterns.PLAYER, path);
                 playerController.patchPlayer(uuid, jsonb.fromJson(request.getReader(), PatchPlayerRequest.class));
+                return;
+            }
+            // Weapon
+            else if (path.matches(Patterns.WEAPON.pattern())) {
+                UUID uuid = extractUuid(Patterns.WEAPON, path);
+                weaponController.patchWeapon(uuid, jsonb.fromJson(request.getReader(), PatchWeaponRequest.class));
+                return;
+            }
+            // Weapon Type
+            else if (path.matches(Patterns.WEAPON_TYPE.pattern())) {
+                UUID uuid = extractUuid(Patterns.WEAPON_TYPE, path);
+                weaponTypeController.patchWeaponType(uuid, jsonb.fromJson(request.getReader(), PatchWeaponTypeRequest.class));
                 return;
             }
         }
@@ -148,6 +214,7 @@ public class ApiServlet extends HttpServlet {
         String path = parseRequestPath(request);
         String servletPath = request.getServletPath();
         if (Paths.API.equals(servletPath)) {
+            // Player
             if (path.matches(Patterns.PLAYER.pattern())) {
                 UUID uuid = extractUuid(Patterns.PLAYER, path);
                 playerController.deletePlayer(uuid);
@@ -156,6 +223,18 @@ public class ApiServlet extends HttpServlet {
             else if (path.matches(Patterns.PLAYER_PICTURE.pattern())) {
                 UUID uuid = extractUuid(Patterns.PLAYER_PICTURE, path);
                 playerController.deletePicture(uuid);
+                return;
+            }
+            // Weapon
+            else if (path.matches(Patterns.WEAPON.pattern())) {
+                UUID uuid = extractUuid(Patterns.WEAPON, path);
+                weaponController.deleteWeapon(uuid);
+                return;
+            }
+            // Weapon Type
+            else if (path.matches(Patterns.WEAPON_TYPE.pattern())) {
+                UUID uuid = extractUuid(Patterns.WEAPON_TYPE, path);
+                weaponTypeController.deleteWeaponType(uuid);
                 return;
             }
         }
