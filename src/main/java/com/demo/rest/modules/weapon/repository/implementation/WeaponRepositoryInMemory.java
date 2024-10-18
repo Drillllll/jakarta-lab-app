@@ -1,14 +1,17 @@
 package com.demo.rest.modules.weapon.repository.implementation;
 
 import com.demo.rest.datastore.DataStore;
+import com.demo.rest.modules.player.entity.Player;
 import com.demo.rest.modules.weapon.entity.Weapon;
 import com.demo.rest.modules.weapon.repository.api.WeaponRepository;
+import com.demo.rest.modules.weapontype.entity.WeaponType;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequestScoped
 public class WeaponRepositoryInMemory implements WeaponRepository {
@@ -47,4 +50,17 @@ public class WeaponRepositoryInMemory implements WeaponRepository {
         store.updateWeapon(entity);
     }
 
+    @Override
+    public List<Weapon> findAllByPlayer(Player player) {
+        return store.findAllWeapons().stream()
+                .filter(weapon -> player.getId().equals(weapon.getPlayer().getId()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Weapon> findAllByWeaponType(WeaponType weaponType) {
+        return store.findAllWeapons().stream()
+                .filter(weapon -> weaponType.getId().equals(weapon.getWeaponType().getId()))
+                .collect(Collectors.toList());
+    }
 }

@@ -66,4 +66,18 @@ public class WeaponControllerBasic implements WeaponController {
                 }
         );
     }
+
+    @Override
+    public GetWeaponsResponse getPlayerWeapons(UUID id) {
+        return service.findAllByPlayer(id)
+                .map(factory.weaponsToResponse())
+                .orElseThrow(NotFoundException::new);
+    }
+
+    @Override
+    public GetWeaponsResponse getWeaponTypeWeapons(UUID id) {
+        return service.findAllByWeaponType(id)
+                .map(factory.weaponsToResponse())
+                .orElseThrow(NotFoundException::new);
+    }
 }

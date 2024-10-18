@@ -73,6 +73,9 @@ public class ApiServlet extends HttpServlet {
         public static final Pattern WEAPON_TYPES = Pattern.compile("/weapontypes/?");
         public static final Pattern WEAPON_TYPE = Pattern.compile("/weapontypes/(%s)".formatted(UUID.pattern()));
 
+        public static final Pattern WEAPON_TYPE_WEAPONS = Pattern.compile("/weapontypes/(%s)/weapons/?".formatted(UUID.pattern()));
+        public static final Pattern PLAYER_WEAPONS = Pattern.compile("/players/(%s)/weapons/?".formatted(UUID.pattern()));
+
     }
 
     /**
@@ -118,7 +121,7 @@ public class ApiServlet extends HttpServlet {
                 return;
             }
             // weapon
-            if (path.matches(Patterns.WEAPONS.pattern())) {
+            else if (path.matches(Patterns.WEAPONS.pattern())) {
                 response.setContentType("application/json");
                 response.getWriter().write(jsonb.toJson(weaponController.getWeapons()));
                 return;
@@ -130,7 +133,7 @@ public class ApiServlet extends HttpServlet {
                 return;
             }
             // weapon type
-            if (path.matches(Patterns.WEAPON_TYPES.pattern())) {
+            else if (path.matches(Patterns.WEAPON_TYPES.pattern())) {
                 response.setContentType("application/json");
                 response.getWriter().write(jsonb.toJson(weaponTypeController.getWeaponTypes()));
                 return;
@@ -141,6 +144,20 @@ public class ApiServlet extends HttpServlet {
                 response.getWriter().write(jsonb.toJson(weaponTypeController.getWeaponType(uuid)));
                 return;
             }
+            // other
+            else if (path.matches(Patterns.PLAYER_WEAPONS.pattern())) {
+                response.setContentType("application/json");
+                UUID uuid = extractUuid(Patterns.PLAYER_WEAPONS, path);
+                response.getWriter().write(jsonb.toJson(weaponController.getPlayerWeapons(uuid)));
+                return;
+            }
+            else if (path.matches(Patterns.WEAPON_TYPE_WEAPONS.pattern())) {
+                response.setContentType("application/json");
+                UUID uuid = extractUuid(Patterns.WEAPON_TYPE_WEAPONS, path);
+                response.getWriter().write(jsonb.toJson(weaponController.getWeaponTypeWeapons(uuid)));
+                return;
+            }
+
         }
         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }

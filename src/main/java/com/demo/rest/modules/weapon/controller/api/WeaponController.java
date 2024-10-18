@@ -19,4 +19,7 @@ public interface WeaponController {
 
     void patchWeapon(UUID id, PatchWeaponRequest request);
 
+    GetWeaponsResponse getPlayerWeapons(UUID id);
+
+    GetWeaponsResponse getWeaponTypeWeapons(UUID id);
 }
