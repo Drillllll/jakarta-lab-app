@@ -12,6 +12,7 @@ import jakarta.inject.Inject;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Log
@@ -101,6 +102,21 @@ public class DataStore {
         }
     }
 
+    public synchronized void deleteWeapon(UUID id) throws IllegalArgumentException {
+        if (!weapons.removeIf(weapon -> weapon.getId().equals(id))) {
+            throw new IllegalArgumentException("The weapon with id \"%s\" does not exist".formatted(id));
+        }
+    }
+
+    public synchronized void deleteWeaponType(UUID id)  throws IllegalArgumentException{
+        weapons.removeIf(weapon -> weapon.getWeaponType().getId().equals(id));
+
+        if (!weaponTypes.removeIf(weaponType -> weaponType.getId().equals(id))) {
+            throw new IllegalArgumentException("The weaponType with id \"%s\" does not exist".formatted(id));
+        }
+
+    }
+
     private Weapon cloneWithRelationShip(Weapon value) {
         Weapon entity = cloningUtility.clone(value);
 
@@ -124,6 +140,7 @@ public class DataStore {
 
         return entity;
     }
+
 
 
 }

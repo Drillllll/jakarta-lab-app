@@ -42,7 +42,7 @@ public class WeaponRepositoryInMemory implements WeaponRepository {
 
     @Override
     public void delete(Weapon entity) {
-        throw new UnsupportedOperationException("Not implemented.");
+        store.deleteWeapon(entity.getId());
     }
 
     @Override

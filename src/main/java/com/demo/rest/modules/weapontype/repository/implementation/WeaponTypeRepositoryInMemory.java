@@ -39,7 +39,7 @@ public class WeaponTypeRepositoryInMemory implements WeaponTypeRepository {
 
     @Override
     public void delete(WeaponType entity) {
-        throw new UnsupportedOperationException("Not implemented.");
+        store.deleteWeaponType(entity.getId());
     }
 
     @Override
