@@ -1,6 +1,6 @@
-package com.demo.rest.modules.weapontype.model;
+package com.demo.rest.modules.weapon.model;
 
-import com.demo.rest.modules.weapontype.entity.DamageType;
+import com.demo.rest.modules.weapontype.model.WeaponTypeModel;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +12,6 @@ import lombok.ToString;
 
 import java.util.UUID;
 
-
 @Getter
 @Setter
 @Builder
@@ -20,13 +19,15 @@ import java.util.UUID;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
 @EqualsAndHashCode
-
-public class WeaponTypeModel {
+public class WeaponCreateModel {
 
     private UUID id;
 
     private String name;
-    private Float speed;
-    private Boolean isTwoHanded;
-    private DamageType damageType;
+    private Integer damage;
+    private Integer weight;
+    private Integer value;
+
+    private WeaponTypeModel weaponType;
+
 }

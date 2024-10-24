@@ -11,6 +11,7 @@ public class WeaponTypeToModelFunction implements Function<WeaponType, WeaponTyp
     @Override
     public WeaponTypeModel apply(WeaponType entity) {
         return WeaponTypeModel.builder()
+                .id(entity.getId())
                 .name(entity.getName())
                 .isTwoHanded(entity.getIsTwoHanded())
                 .speed(entity.getSpeed())
