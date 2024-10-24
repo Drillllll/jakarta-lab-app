@@ -1,6 +1,8 @@
 package com.demo.rest.helpers;
 
+import com.demo.rest.modules.weapon.model.UpdateWeaponWithModelFunction;
 import com.demo.rest.modules.weapon.model.function.ModelToWeaponFunction;
+import com.demo.rest.modules.weapon.model.function.WeaponToEditModelFunction;
 import com.demo.rest.modules.weapon.model.function.WeaponToModelFunction;
 import com.demo.rest.modules.weapon.model.function.WeaponsToModelFunction;
 import com.demo.rest.modules.weapontype.model.function.WeaponTypeToModelFunction;
@@ -16,4 +18,6 @@ public class ModelFunctionFactory {
     public WeaponsToModelFunction weaponsToModel() {return new WeaponsToModelFunction();}
     public WeaponToModelFunction weaponToModel() {return new WeaponToModelFunction();}
     public ModelToWeaponFunction modelToWeapon() {return new ModelToWeaponFunction();}
+    public WeaponToEditModelFunction weaponToEditModel() {return new WeaponToEditModelFunction();}
+    public UpdateWeaponWithModelFunction updateWeapon() {return new UpdateWeaponWithModelFunction();}
 }
