@@ -15,8 +15,8 @@ public class UpdateWeaponWithModelFunction implements BiFunction<Weapon, WeaponE
                 .id(entity.getId())
                 .name(request.getName())
                 .weight(request.getWeight())
-                .value(entity.getValue())
-                .damage(entity.getDamage())
+                .value(request.getValue())
+                .damage(request.getDamage())
                 .weaponType(entity.getWeaponType())
                 .build();
     }
