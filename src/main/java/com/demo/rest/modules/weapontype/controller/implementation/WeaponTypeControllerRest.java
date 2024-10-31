@@ -1,7 +1,5 @@
 package com.demo.rest.modules.weapontype.controller.implementation;
 
-import com.demo.rest.controller.servlet.exception.BadRequestException;
-import com.demo.rest.controller.servlet.exception.NotFoundException;
 import com.demo.rest.helpers.DtoFunctionFactory;
 import com.demo.rest.modules.weapontype.controller.api.WeaponTypeController;
 import com.demo.rest.modules.weapontype.dto.GetWeaponTypeResponse;
@@ -9,21 +7,51 @@ import com.demo.rest.modules.weapontype.dto.GetWeaponTypesResponse;
 import com.demo.rest.modules.weapontype.dto.PatchWeaponTypeRequest;
 import com.demo.rest.modules.weapontype.dto.PutWeaponTypeRequest;
 import com.demo.rest.modules.weapontype.service.WeaponTypeService;
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.ws.rs.BadRequestException;
+import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriBuilder;
+import jakarta.ws.rs.core.UriInfo;
+import lombok.SneakyThrows;
 import jakarta.inject.Inject;
+
 
 import java.util.UUID;
 
-@RequestScoped
-public class WeaponTypeControllerBasic implements WeaponTypeController {
+@Path("")
+public class WeaponTypeControllerRest implements WeaponTypeController {
 
     private final WeaponTypeService service;
     private final DtoFunctionFactory factory;
 
+    /**
+     * Allows to create {@link UriBuilder} based on current request.
+     */
+    private final UriInfo uriInfo;
+
+    /**
+     * Current HTTP Servlet response.
+     */
+    private HttpServletResponse response;
+
+    @Context
+    public void setResponse(HttpServletResponse response) {
+        //ATM in this implementation only HttpServletRequest can be injected with CDI so JAX-RS injection is used.
+        this.response = response;
+    }
+
     @Inject
-    public WeaponTypeControllerBasic(WeaponTypeService weaponTypeService, DtoFunctionFactory factory) {
+    public WeaponTypeControllerRest(
+            WeaponTypeService weaponTypeService,
+            DtoFunctionFactory factory,
+            @SuppressWarnings("CdiInjectionPointsInspection") UriInfo uriInfo) {
         this.service = weaponTypeService;
         this.factory = factory;
+        this.uriInfo = uriInfo;
     }
 
     @Override
@@ -39,9 +67,20 @@ public class WeaponTypeControllerBasic implements WeaponTypeController {
     }
 
     @Override
+    @SneakyThrows
     public void putWeaponType(UUID id, PutWeaponTypeRequest request) {
         try {
             service.create(factory.requestToWeaponType().apply(id, request));
+            //This can be done with Response builder but requires method different return type.
+            response.setHeader("Location", uriInfo.getBaseUriBuilder()
+                    .path(WeaponTypeController.class, "getWeaponType")
+                    .build(id)
+                    .toString());
+            //This can be done with Response builder but requires method different return type.
+            //Calling HttpServletResponse#setStatus(int) is ignored.
+            //Calling HttpServletResponse#sendError(int) causes response headers and body looking like error.
+            throw new WebApplicationException(Response.Status.CREATED);
+
         } catch (IllegalArgumentException ex) {
             throw new BadRequestException(ex);
         }

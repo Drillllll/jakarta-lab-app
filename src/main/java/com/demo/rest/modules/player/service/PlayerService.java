@@ -1,13 +1,12 @@
 package com.demo.rest.modules.player.service;
 
-import com.demo.rest.controller.servlet.exception.NotFoundException;
 import com.demo.rest.crypto.Pbkdf2PasswordHash;
 import com.demo.rest.modules.player.entity.Player;
 import com.demo.rest.modules.player.repository.api.PlayerRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.NoArgsConstructor;
-
+import jakarta.ws.rs.NotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;

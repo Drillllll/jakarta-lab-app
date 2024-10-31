@@ -37,4 +37,4 @@ Content-Type: application/json
 GET http://localhost:9080/jakarta-lab-app/api/weapontypes/6abd5ba8-37ff-4c0c-8e75-b3baa6632e05
 
 ### DELETE WEAPON TYPE
-DELETE http://localhost:9080/jakarta-lab-app/api/weapontypes/cdfbd2ad-7c1e-48d7-9f91-2d6d0c089b60
+DELETE http://localhost:9080/jakarta-lab-app/api/weapontypes/6abd5ba8-37ff-4c0c-8e75-b3baa6632e05

@@ -1,7 +1,7 @@
 package com.demo.rest.modules.player.controller.implementation;
 
-import com.demo.rest.controller.servlet.exception.BadRequestException;
-import com.demo.rest.controller.servlet.exception.NotFoundException;
+import jakarta.ws.rs.BadRequestException;
+import jakarta.ws.rs.NotFoundException;
 import com.demo.rest.helpers.DtoFunctionFactory;
 import com.demo.rest.modules.player.controller.api.PlayerController;
 import com.demo.rest.modules.player.dto.GetPlayerResponse;
