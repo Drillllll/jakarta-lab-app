@@ -6,20 +6,50 @@ import com.demo.rest.modules.weapon.dto.PatchWeaponRequest;
 import com.demo.rest.modules.weapon.dto.PutWeaponRequest;
 
 import java.util.UUID;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PATCH;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 
+@Path("")
 public interface WeaponController {
 
+    @GET
+    @Path("/weapons")
+    @Produces(MediaType.APPLICATION_JSON)
     GetWeaponsResponse getWeapons();
 
-    GetWeaponResponse getWeapon(UUID id);
+    @GET
+    @Path("/weapons/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    GetWeaponResponse getWeapon(@PathParam("id") UUID id);
 
-    void putWeapon(UUID id, PutWeaponRequest request);
+    @PUT
+    @Path("/weapons/{id}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    void putWeapon(@PathParam("id") UUID id, PutWeaponRequest request);
 
-    void deleteWeapon(UUID id);
+    @DELETE
+    @Path("/weapons/{id}")
+    void deleteWeapon(@PathParam("id") UUID id);
 
-    void patchWeapon(UUID id, PatchWeaponRequest request);
+    @PATCH
+    @Path("/weapons/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    void patchWeapon(@PathParam("id") UUID id, PatchWeaponRequest request);
 
-    GetWeaponsResponse getPlayerWeapons(UUID id);
+    @GET
+    @Path("/players/{id}/weapons")
+    @Produces(MediaType.APPLICATION_JSON)
+    GetWeaponsResponse getPlayerWeapons(@PathParam("id") UUID id);
 
-    GetWeaponsResponse getWeaponTypeWeapons(UUID id);
+    @GET
+    @Path("/weapontypes/{id}/weapons")
+    @Produces(MediaType.APPLICATION_JSON)
+    GetWeaponsResponse getWeaponTypeWeapons(@PathParam("id") UUID id);
 }
