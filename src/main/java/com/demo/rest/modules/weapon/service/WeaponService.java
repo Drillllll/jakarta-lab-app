@@ -6,6 +6,7 @@ import com.demo.rest.modules.weapon.repository.api.WeaponRepository;
 import com.demo.rest.modules.weapontype.repository.api.WeaponTypeRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.NotFoundException;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -29,18 +30,30 @@ public class WeaponService {
 
     }
 
-    public Optional<Weapon> find(UUID id) {
-        return weaponRepository.find(id);
+    public Optional<Weapon> find(UUID weaponTypeId, UUID weaponId) {
+        return this.findAllByWeaponType(weaponTypeId)
+                .flatMap(weapons -> weapons.stream()
+                        .filter(weapon -> weapon.getId().equals(weaponId))
+                        .findFirst());
     }
 
     public List<Weapon> findAll() {
         return weaponRepository.findAll();
     }
 
-    public void create(Weapon weapon) {
-
-        weaponRepository.create(weapon);
+    public void create(Weapon weapon, UUID weaponTypeId) {
+        // Sprawdź, czy istnieje typ broni o podanym id
+        weaponTypeRepository.find(weaponTypeId).ifPresentOrElse(
+                weaponType -> {
+                    weapon.setWeaponType(weaponType);
+                    weaponRepository.create(weapon);
+                },
+                () -> {
+                    throw new NotFoundException("Weapon type not found");
+                }
+        );
     }
+
 
     public void delete(UUID id) {
         weaponRepository.delete(weaponRepository.find(id).orElseThrow());

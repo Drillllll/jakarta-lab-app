@@ -50,7 +50,7 @@ public class WeaponEdit implements Serializable {
      * field and initialized during init of the view.
      */
     public void init() throws IOException {
-        Optional<Weapon> weapon = service.find(id);
+        Optional<Weapon> weapon = service.find(id, id); //TODO change id
         if (weapon.isPresent()) {
             this.weapon = factory.weaponToEditModel().apply(weapon.get());
         } else {
@@ -59,7 +59,7 @@ public class WeaponEdit implements Serializable {
     }
 
     public String saveAction() {
-        service.update(factory.updateWeapon().apply(service.find(id).orElseThrow(), weapon));
+        service.update(factory.updateWeapon().apply(service.find(id, id).orElseThrow(), weapon)); //TODO change id
         String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
         return viewId + "?faces-redirect=true&includeViewParams=true";
     }

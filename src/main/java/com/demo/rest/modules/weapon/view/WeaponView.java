@@ -42,7 +42,7 @@ public class WeaponView implements Serializable {
 
 
     public void init() throws IOException {
-        Optional<Weapon> weapon = weaponService.find(id);
+        Optional<Weapon> weapon = weaponService.find(id, id); //TODO CHANGE second id
         if (weapon.isPresent()) {
             this.weapon = factory.weaponToModel().apply(weapon.get());
         } else {

@@ -20,28 +20,28 @@ import jakarta.ws.rs.core.MediaType;
 public interface WeaponController {
 
     @GET
-    @Path("/weapons")
+    @Path("weapontypes/weapons")
     @Produces(MediaType.APPLICATION_JSON)
     GetWeaponsResponse getWeapons();
 
     @GET
-    @Path("/weapons/{id}")
+    @Path("weapontypes/{weapontypeid}/weapons/{weaponid}")
     @Produces(MediaType.APPLICATION_JSON)
-    GetWeaponResponse getWeapon(@PathParam("id") UUID id);
+    GetWeaponResponse getWeapon(@PathParam("weapontypeid") UUID weaponTypeId, @PathParam("weaponid") UUID weaponId);
 
     @PUT
-    @Path("/weapons/{id}")
+    @Path("weapontypes/{weapontypeid}/weapons/{weaponid}")
     @Consumes({MediaType.APPLICATION_JSON})
-    void putWeapon(@PathParam("id") UUID id, PutWeaponRequest request);
+    void putWeapon(@PathParam("weapontypeid") UUID weaponTypeId, @PathParam("weaponid") UUID weaponId, PutWeaponRequest request);
 
     @DELETE
-    @Path("/weapons/{id}")
-    void deleteWeapon(@PathParam("id") UUID id);
+    @Path("weapontypes/{weapontypeid}/weapons/{weaponid}")
+    void deleteWeapon(@PathParam("weapontypeid") UUID weaponTypeId, @PathParam("weaponid") UUID weaponId);
 
     @PATCH
-    @Path("/weapons/{id}")
+    @Path("weapontypes/{weapontypeid}/weapons/{weaponid}")
     @Consumes(MediaType.APPLICATION_JSON)
-    void patchWeapon(@PathParam("id") UUID id, PatchWeaponRequest request);
+    void patchWeapon(@PathParam("weapontypeid") UUID weaponTypeId, @PathParam("weaponid") UUID weaponId, PatchWeaponRequest request);
 
     @GET
     @Path("/players/{id}/weapons")

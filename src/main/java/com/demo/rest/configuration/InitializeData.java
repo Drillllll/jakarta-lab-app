@@ -175,10 +175,10 @@ public class InitializeData {
                 .player(archer)
                 .build();
 
-        weaponService.create(twoHandedSword1);
-        weaponService.create(dagger1);
-        weaponService.create(bow1);
-        weaponService.create(wand1);
+        weaponService.create(twoHandedSword1, twoHandedSword.getId());
+        weaponService.create(dagger1, dagger.getId());
+        weaponService.create(bow1, bow.getId());
+        weaponService.create(wand1, wand.getId());
 
         requestContextController.deactivate();
 

@@ -65,34 +65,31 @@ public class WeaponControllerRest implements WeaponController {
     }
 
     @Override
-    public GetWeaponResponse getWeapon(UUID id) {
-        return service.find(id)
+    public GetWeaponResponse getWeapon(UUID weaponTypeId, UUID weaponId) {
+        return service.find(weaponTypeId, weaponId)
                 .map(factory.weaponToResponse())
                 .orElseThrow(NotFoundException::new);
     }
 
     @Override
-    public void putWeapon(UUID id, PutWeaponRequest request) {
+    public void putWeapon(UUID weaponTypeId, UUID weaponId, PutWeaponRequest request) {
         try {
-            service.create(factory.requestToWeapon().apply(id, request));
-            //This can be done with Response builder but requires method different return type.
-            response.setHeader("Location", uriInfo.getBaseUriBuilder()
-                    .path(WeaponController.class, "getWeapon")
-                    .build(id)
-                    .toString());
-            //This can be done with Response builder but requires method different return type.
-            //Calling HttpServletResponse#setStatus(int) is ignored.
-            //Calling HttpServletResponse#sendError(int) causes response headers and body looking like error.
+            service.create(factory.requestToWeapon().apply(weaponId, request), weaponTypeId);
+
             throw new WebApplicationException(Response.Status.CREATED);
         } catch (IllegalArgumentException ex) {
             throw new BadRequestException(ex);
+        }  catch (NotFoundException ex) {
+            // Obsłuż sytuację, gdy weaponTypeId nie istnieje
+            throw new NotFoundException("Weapon type not found");
         }
+
     }
 
     @Override
-    public void deleteWeapon(UUID id) {
-        service.find(id).ifPresentOrElse(
-                entity -> service.delete(id),
+    public void deleteWeapon(UUID weaponTypeId, UUID weaponId) {
+        service.find(weaponTypeId, weaponId).ifPresentOrElse(
+                entity -> service.delete(weaponId),
                 () -> {
                     throw new NotFoundException();
                 }
@@ -100,8 +97,8 @@ public class WeaponControllerRest implements WeaponController {
     }
 
     @Override
-    public void patchWeapon(UUID id, PatchWeaponRequest request) {
-        service.find(id).ifPresentOrElse(
+    public void patchWeapon(UUID weaponTypeId, UUID weaponId, PatchWeaponRequest request) {
+        service.find(weaponTypeId, weaponId).ifPresentOrElse(
                 entity -> service.update(factory.updateWeapon().apply(entity, request)),
                 () -> {
                     throw new NotFoundException();
