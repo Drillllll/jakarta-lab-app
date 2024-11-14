@@ -1,49 +1,53 @@
 package com.demo.rest.modules.weapontype.repository.implementation;
 
-import com.demo.rest.datastore.DataStore;
 import com.demo.rest.modules.weapontype.entity.WeaponType;
 import com.demo.rest.modules.weapontype.repository.api.WeaponTypeRepository;
 import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+
 @RequestScoped
-public class WeaponTypeRepositoryInMemory implements WeaponTypeRepository {
+public class WeaponTypePersistenceRepository implements WeaponTypeRepository {
 
-    private final DataStore store;
+    /**
+     * Connection with the database (not thread safe).
+     */
+    private EntityManager em;
 
-    @Inject
-    public WeaponTypeRepositoryInMemory(DataStore store) {
-        this.store = store;
+    @PersistenceContext
+    public void setEm(EntityManager em) {
+        this.em = em;
     }
 
     @Override
     public Optional<WeaponType> find(UUID id) {
-        return store.findAllWeaponTypes().stream()
-                .filter(weaponType -> weaponType.getId().equals(id))
-                .findFirst();
+        return Optional.ofNullable(em.find(WeaponType.class, id));
     }
 
     @Override
     public List<WeaponType> findAll() {
-        return store.findAllWeaponTypes();
+        return em.createQuery("select w from WeaponType w", WeaponType.class).getResultList();
     }
 
     @Override
     public void create(WeaponType entity) {
-        store.createWeaponType(entity);
+        em.persist(entity);
     }
 
     @Override
     public void delete(WeaponType entity) {
-        store.deleteWeaponType(entity.getId());
+        em.remove(em.find(WeaponType.class, entity.getId()));
     }
 
     @Override
     public void update(WeaponType entity) {
-        store.updateWeaponType(entity);
+        em.merge(entity);
     }
+
 }

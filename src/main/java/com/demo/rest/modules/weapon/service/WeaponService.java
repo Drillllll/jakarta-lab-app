@@ -6,6 +6,7 @@ import com.demo.rest.modules.weapon.repository.api.WeaponRepository;
 import com.demo.rest.modules.weapontype.repository.api.WeaponTypeRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -22,7 +23,11 @@ public class WeaponService {
 
 
     @Inject
-    public WeaponService(WeaponRepository weaponRepository, PlayerRepository playerRepository, WeaponTypeRepository weaponTypeRepository) {
+    public WeaponService(
+            WeaponRepository weaponRepository,
+            PlayerRepository playerRepository,
+            WeaponTypeRepository weaponTypeRepository
+    ) {
         this.weaponRepository = weaponRepository;
         this.playerRepository = playerRepository;
         this.weaponTypeRepository = weaponTypeRepository;
@@ -37,15 +42,29 @@ public class WeaponService {
         return weaponRepository.findAll();
     }
 
+    @Transactional
     public void create(Weapon weapon) {
-
+        if (weaponRepository.find(weapon.getId()).isPresent()) {
+            throw new IllegalArgumentException("Weapon already exists.");
+        }
+        if (weaponTypeRepository.find(weapon.getWeaponType().getId()).isEmpty()) {
+            throw new IllegalArgumentException("weaponType does not exists.");
+        }
         weaponRepository.create(weapon);
+        /* Both sides of relationship must be handled (if accessed) because of cache. */
+        weaponTypeRepository.find(weapon.getWeaponType().getId())
+                .ifPresent(weaponType -> weaponType.getWeapons().add(weapon));
+        /*userRepository.find(weapon.getUser().getId())
+                .ifPresent(user -> user.getWeapons().add(weapon));*/
+
     }
 
+    @Transactional
     public void delete(UUID id) {
         weaponRepository.delete(weaponRepository.find(id).orElseThrow());
     }
 
+    @Transactional
     public void update(Weapon weapon) {
         weaponRepository.update(weapon);
     }
