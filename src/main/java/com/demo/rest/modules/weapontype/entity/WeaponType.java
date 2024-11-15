@@ -35,7 +35,7 @@ public class WeaponType implements Serializable {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "weapontype", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "weaponType", cascade = CascadeType.REMOVE)
     private List<Weapon> weapons;
 
 

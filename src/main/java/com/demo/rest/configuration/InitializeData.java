@@ -55,6 +55,8 @@ public class InitializeData {
     @SneakyThrows
     private void init() {
 
+      /*  System.out.println(" &&&& Initializing data ==========================================================");
+
         requestContextController.activate();// start request scope in order to inject request scoped repositories
 
         Player warrior = Player.builder()
@@ -93,7 +95,10 @@ public class InitializeData {
                 .heroName("Patient Archer")
                 .build();
 
+
+        System.out.println(" &&&& creating warrior ==========================================================");
         playerService.create(warrior);
+        System.out.println(" &&&& creating mage ==========================================================");
         playerService.create(mage);
         playerService.create(assassin);
         playerService.create(archer);
@@ -181,7 +186,7 @@ public class InitializeData {
         weaponService.create(wand1);
 
         requestContextController.deactivate();
-
+*/
     }
 
 

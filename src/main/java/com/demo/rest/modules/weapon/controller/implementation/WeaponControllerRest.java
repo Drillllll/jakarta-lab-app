@@ -61,6 +61,7 @@ public class WeaponControllerRest implements WeaponController {
 
     @Override
     public GetWeaponsResponse getWeapons() {
+        System.out.println("&&&&&&&& GET WEAPONS =========");
         return factory.weaponsToResponse().apply(service.findAll());
     }
 

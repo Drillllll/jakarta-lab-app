@@ -31,10 +31,8 @@ public class Player implements Serializable {
     @Id
     private UUID id;
 
-    @Column(nullable = false, unique = true)
     private String login;
 
-    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(name = "birth_date")

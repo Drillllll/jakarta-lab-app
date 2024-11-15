@@ -26,6 +26,8 @@ public class Weapon implements Serializable {
     private String name;
     private Integer damage;
     private Integer weight;
+
+    @Column(name = "\"VALUE\"")
     private Integer value;
 
     @ManyToOne
@@ -33,7 +35,7 @@ public class Weapon implements Serializable {
     private WeaponType weaponType;
 
     @ManyToOne
-    @JoinColumn(name = "player")
+    @JoinColumn(name = "player_username")
     private Player player;
 }
 
