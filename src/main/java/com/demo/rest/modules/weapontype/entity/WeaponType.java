@@ -1,14 +1,9 @@
 package com.demo.rest.modules.weapontype.entity;
 
 import com.demo.rest.modules.weapon.entity.Weapon;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Id;
-
 
 import java.util.List;
 import java.io.Serializable;
@@ -35,7 +30,7 @@ public class WeaponType implements Serializable {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "weaponType", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "weaponType", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Weapon> weapons;
 
 

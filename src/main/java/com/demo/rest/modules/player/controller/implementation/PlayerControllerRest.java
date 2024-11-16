@@ -1,5 +1,6 @@
 package com.demo.rest.modules.player.controller.implementation;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 import com.demo.rest.helpers.DtoFunctionFactory;
@@ -9,20 +10,21 @@ import com.demo.rest.modules.player.dto.GetPlayersResponse;
 import com.demo.rest.modules.player.dto.PatchPlayerRequest;
 import com.demo.rest.modules.player.dto.PutPlayerRequest;
 import com.demo.rest.modules.player.service.PlayerService;
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.core.Context;
 
 import java.io.InputStream;
 import java.util.UUID;
 
-@RequestScoped
-public class PlayerControllerBasic implements PlayerController {
+@Path("")
+public class PlayerControllerRest implements PlayerController {
 
     private final PlayerService service;
     private final DtoFunctionFactory factory;
 
     @Inject
-    public PlayerControllerBasic(PlayerService playerService, DtoFunctionFactory factory) {
+    public PlayerControllerRest(PlayerService playerService, DtoFunctionFactory factory) {
         this.service = playerService;
         this.factory = factory;
     }

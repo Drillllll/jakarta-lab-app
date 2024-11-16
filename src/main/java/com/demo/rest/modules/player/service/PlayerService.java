@@ -68,6 +68,9 @@ public class PlayerService {
 
     @Transactional
     public void create(Player player) {
+        if (repository.find(player.getId()).isPresent()) {
+            throw new IllegalArgumentException("player already exists.");
+        }
         player.setPassword(passwordHash.generate(player.getPassword().toCharArray()));
         repository.create(player);
     }

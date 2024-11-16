@@ -55,8 +55,6 @@ public class InitializeData {
     @SneakyThrows
     private void init() {
 
-      /*  System.out.println(" &&&& Initializing data ==========================================================");
-
         requestContextController.activate();// start request scope in order to inject request scoped repositories
 
         Player warrior = Player.builder()
@@ -96,12 +94,6 @@ public class InitializeData {
                 .build();
 
 
-        System.out.println(" &&&& creating warrior ==========================================================");
-        playerService.create(warrior);
-        System.out.println(" &&&& creating mage ==========================================================");
-        playerService.create(mage);
-        playerService.create(assassin);
-        playerService.create(archer);
 
         WeaponType twoHandedSword = WeaponType.builder()
                 .id(UUID.fromString("ef47b366-7352-417f-a232-c530e65d7226"))
@@ -135,10 +127,7 @@ public class InitializeData {
                 .damageType(DamageType.PHYSICAL)
                 .build();
 
-        weaponTypeService.create(twoHandedSword);
-        weaponTypeService.create(wand);
-        weaponTypeService.create(dagger);
-        weaponTypeService.create(bow);
+
 
         Weapon twoHandedSword1 = Weapon.builder()
                 .id(UUID.fromString("ae52c4e1-86ff-4cb9-909c-eea125c10a5f"))
@@ -180,13 +169,30 @@ public class InitializeData {
                 .player(archer)
                 .build();
 
-        weaponService.create(twoHandedSword1);
-        weaponService.create(dagger1);
-        weaponService.create(bow1);
-        weaponService.create(wand1);
+
+
+        try {
+            playerService.create(warrior);
+            playerService.create(mage);
+            playerService.create(assassin);
+            playerService.create(archer);
+
+            weaponTypeService.create(twoHandedSword);
+            weaponTypeService.create(wand);
+            weaponTypeService.create(dagger);
+            weaponTypeService.create(bow);
+
+            weaponService.create(twoHandedSword1);
+            weaponService.create(dagger1);
+            weaponService.create(bow1);
+            weaponService.create(wand1);
+        }
+        catch (Exception e) {
+            System.out.println("EXCEPTION WHEN INITIALIZING - DATA ALREADY EXIST IN THE DATABASE");
+            System.out.println(e.getMessage());
+        }
 
         requestContextController.deactivate();
-*/
     }
 
 

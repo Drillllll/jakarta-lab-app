@@ -50,12 +50,15 @@ public class WeaponService {
         if (weaponTypeRepository.find(weapon.getWeaponType().getId()).isEmpty()) {
             throw new IllegalArgumentException("weaponType does not exists.");
         }
+        if (playerRepository.find(weapon.getPlayer().getId()).isEmpty()) {
+            throw new IllegalArgumentException("player does not exists.");
+        }
         weaponRepository.create(weapon);
         /* Both sides of relationship must be handled (if accessed) because of cache. */
         weaponTypeRepository.find(weapon.getWeaponType().getId())
                 .ifPresent(weaponType -> weaponType.getWeapons().add(weapon));
-        /*userRepository.find(weapon.getUser().getId())
-                .ifPresent(user -> user.getWeapons().add(weapon));*/
+        playerRepository.find(weapon.getPlayer().getId())
+                .ifPresent(player -> player.getWeapons().add(weapon));
 
     }
 

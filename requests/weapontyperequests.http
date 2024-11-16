@@ -1,15 +1,15 @@
 ### GET all weapontypes
-GET http://localhost:9080/jakarta-lab-app/api/weapontypes
+GET http://localhost:9080/jakarta-lab-app-1.0/api/weapontypes
 
 ### GET not existing weapontype
-GET http://localhost:9080/jakarta-lab-app/api/weapontypes/f073a31e-3723-4b70-8678-059fa5fa2ecd
+GET http://localhost:9080/jakarta-lab-app-1.0/api/weapontypes/f073a31e-3723-4b70-8678-059fa5fa2ecd
 
 ### GET existing weapontype
-GET http://localhost:9080/jakarta-lab-app/api/weapontypes/ef47b366-7352-417f-a232-c530e65d7226
+GET http://localhost:9080/jakarta-lab-app-1.0/api/weapontypes/ef47b366-7352-417f-a232-c530e65d7226
 
 
 ### PUT new weapontype
-PUT http://localhost:9080/jakarta-lab-app/api/weapontypes/6abd5ba8-37ff-4c0c-8e75-b3baa6632e05
+PUT http://localhost:9080/jakarta-lab-app-1.0/api/weapontypes/6abd5ba8-37ff-4c0c-8e75-b3baa6632e05
 Content-Type: application/json
 
 {
@@ -20,10 +20,10 @@ Content-Type: application/json
 }
 
 ### GET created weapontype
-GET http://localhost:9080/jakarta-lab-app/api/weapontypes/6abd5ba8-37ff-4c0c-8e75-b3baa6632e05
+GET http://localhost:9080/jakarta-lab-app-1.0/api/weapontypes/6abd5ba8-37ff-4c0c-8e75-b3baa6632e05
 
 ### PATCH new weapontype
-PATCH http://localhost:9080/jakarta-lab-app/api/weapontypes/6abd5ba8-37ff-4c0c-8e75-b3baa6632e05
+PATCH http://localhost:9080/jakarta-lab-app-1.0/api/weapontypes/6abd5ba8-37ff-4c0c-8e75-b3baa6632e05
 Content-Type: application/json
 
 {
@@ -34,7 +34,9 @@ Content-Type: application/json
 }
 
 ### GET patched weapontype
-GET http://localhost:9080/jakarta-lab-app/api/weapontypes/6abd5ba8-37ff-4c0c-8e75-b3baa6632e05
+GET http://localhost:9080/jakarta-lab-app-1.0/api/weapontypes/6abd5ba8-37ff-4c0c-8e75-b3baa6632e05
 
 ### DELETE WEAPON TYPE
-DELETE http://localhost:9080/jakarta-lab-app/api/weapontypes/6abd5ba8-37ff-4c0c-8e75-b3baa6632e05
+DELETE http://localhost:9080/jakarta-lab-app-1.0/api/weapontypes/6abd5ba8-37ff-4c0c-8e75-b3baa6632e05
+
+

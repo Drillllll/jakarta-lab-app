@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <server description="new server">
-
     <featureManager>
-        <feature>jakartaee-10.0</feature>
+        <feature>servlet-6.0</feature>
+        <feature>jsonb-3.0</feature>
         <feature>cdi-4.0</feature>
         <feature>faces-4.0</feature>
         <feature>restfulWS-3.1</feature>
@@ -22,11 +22,5 @@
         <fileset dir="${wlp.install.dir}/usr/servers/defaultServer/lib/global/" includes="h2-2.2.220.jar"/>
     </library>
 
-
-    <basicRegistry id="basic" realm="BasicRealm">
-        <!--
-        <user name="yourUserName" password="" />
-        -->
-    </basicRegistry>
 
 </server>
