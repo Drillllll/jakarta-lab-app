@@ -2,7 +2,7 @@ package com.demo.rest.modules.player.repository.implementation;
 
 import com.demo.rest.modules.player.entity.Player;
 import com.demo.rest.modules.player.repository.api.PlayerRepository;
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.Dependent;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
@@ -18,7 +18,7 @@ import java.util.UUID;
  * Because services are CDI application scoped beans (technically singletons) then repositories must be thread scoped in
  * order to ensure single entity manager for single thread.
  */
-@RequestScoped
+@Dependent
 public class PlayerPersistenceRepository implements PlayerRepository {
 
     /**

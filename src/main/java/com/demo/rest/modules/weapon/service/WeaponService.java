@@ -4,16 +4,17 @@ import com.demo.rest.modules.player.repository.api.PlayerRepository;
 import com.demo.rest.modules.weapon.entity.Weapon;
 import com.demo.rest.modules.weapon.repository.api.WeaponRepository;
 import com.demo.rest.modules.weapontype.repository.api.WeaponTypeRepository;
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import lombok.NoArgsConstructor;
+import jakarta.ejb.LocalBean;
+import jakarta.ejb.Stateless;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@ApplicationScoped
+@LocalBean
+@Stateless
 @NoArgsConstructor(force = true)
 public class WeaponService {
 
@@ -42,7 +43,6 @@ public class WeaponService {
         return weaponRepository.findAll();
     }
 
-    @Transactional
     public void create(Weapon weapon) {
         if (weaponRepository.find(weapon.getId()).isPresent()) {
             throw new IllegalArgumentException("Weapon already exists.");
@@ -62,12 +62,10 @@ public class WeaponService {
 
     }
 
-    @Transactional
     public void delete(UUID id) {
         weaponRepository.delete(weaponRepository.find(id).orElseThrow());
     }
 
-    @Transactional
     public void update(Weapon weapon) {
         weaponRepository.update(weapon);
     }

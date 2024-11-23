@@ -1,8 +1,8 @@
 package com.demo.rest.modules.weapontype.repository.implementation;
 
+import jakarta.enterprise.context.Dependent;
 import com.demo.rest.modules.weapontype.entity.WeaponType;
 import com.demo.rest.modules.weapontype.repository.api.WeaponTypeRepository;
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
@@ -11,8 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-
-@RequestScoped
+@Dependent
 public class WeaponTypePersistenceRepository implements WeaponTypeRepository {
 
     /**

@@ -1,6 +1,5 @@
 package com.demo.rest.modules.player.controller.implementation;
 
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 import com.demo.rest.helpers.DtoFunctionFactory;
@@ -12,7 +11,8 @@ import com.demo.rest.modules.player.dto.PutPlayerRequest;
 import com.demo.rest.modules.player.service.PlayerService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.core.Context;
+import jakarta.ejb.EJB;
+import jakarta.ejb.EJBException;
 
 import java.io.InputStream;
 import java.util.UUID;
@@ -20,13 +20,17 @@ import java.util.UUID;
 @Path("")
 public class PlayerControllerRest implements PlayerController {
 
-    private final PlayerService service;
+    private PlayerService service;
     private final DtoFunctionFactory factory;
 
     @Inject
-    public PlayerControllerRest(PlayerService playerService, DtoFunctionFactory factory) {
-        this.service = playerService;
+    public PlayerControllerRest(DtoFunctionFactory factory) {
         this.factory = factory;
+    }
+
+    @EJB
+    public void setService(PlayerService service) {
+        this.service = service;
     }
 
     @Override
@@ -45,7 +49,7 @@ public class PlayerControllerRest implements PlayerController {
     public void putPlayer(UUID id, PutPlayerRequest request) {
         try {
             service.create(factory.requestToPlayer().apply(id, request));
-        } catch (IllegalArgumentException ex) {
+        } catch (EJBException ex) {
             throw new BadRequestException(ex);
         }
     }

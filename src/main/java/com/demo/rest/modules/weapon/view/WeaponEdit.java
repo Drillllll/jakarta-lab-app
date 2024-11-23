@@ -4,6 +4,7 @@ import com.demo.rest.helpers.ModelFunctionFactory;
 import com.demo.rest.modules.weapon.entity.Weapon;
 import com.demo.rest.modules.weapon.model.WeaponEditModel;
 import com.demo.rest.modules.weapon.service.WeaponService;
+import jakarta.ejb.EJB;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
@@ -11,7 +12,6 @@ import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.Setter;
-
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -24,7 +24,7 @@ import java.util.UUID;
 public class WeaponEdit implements Serializable {
 
 
-    private final WeaponService service;
+    private WeaponService service;
 
     private final ModelFunctionFactory factory;
 
@@ -40,9 +40,13 @@ public class WeaponEdit implements Serializable {
 
 
     @Inject
-    public WeaponEdit(WeaponService service, ModelFunctionFactory factory) {
-        this.service = service;
+    public WeaponEdit(ModelFunctionFactory factory) {
         this.factory = factory;
+    }
+
+    @EJB
+    public void setService(WeaponService service) {
+        this.service = service;
     }
 
     /**

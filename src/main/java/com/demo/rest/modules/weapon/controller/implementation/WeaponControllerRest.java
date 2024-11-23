@@ -1,6 +1,7 @@
 package com.demo.rest.modules.weapon.controller.implementation;
 
-import com.demo.rest.modules.weapontype.controller.api.WeaponTypeController;
+import jakarta.ejb.EJB;
+import jakarta.ejb.EJBException;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 import com.demo.rest.helpers.DtoFunctionFactory;
@@ -10,20 +11,14 @@ import com.demo.rest.modules.weapon.dto.GetWeaponsResponse;
 import com.demo.rest.modules.weapon.dto.PatchWeaponRequest;
 import com.demo.rest.modules.weapon.dto.PutWeaponRequest;
 import com.demo.rest.modules.weapon.service.WeaponService;
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Path;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.ws.rs.BadRequestException;
-import jakarta.ws.rs.NotFoundException;
-import jakarta.ws.rs.Path;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
-import lombok.SneakyThrows;
-import jakarta.inject.Inject;
 
 import java.util.UUID;
 
@@ -40,7 +35,7 @@ public class WeaponControllerRest implements WeaponController {
      */
     private HttpServletResponse response;
 
-    private final WeaponService service;
+    private WeaponService service;
     private final DtoFunctionFactory factory;
 
     @Context
@@ -51,12 +46,15 @@ public class WeaponControllerRest implements WeaponController {
 
     @Inject
     public WeaponControllerRest(
-            WeaponService weaponService,
             DtoFunctionFactory factory,
             @SuppressWarnings("CdiInjectionPointsInspection") UriInfo uriInfo) {
-        this.service = weaponService;
         this.factory = factory;
         this.uriInfo = uriInfo;
+    }
+
+    @EJB
+    public void setService(WeaponService service) {
+        this.service = service;
     }
 
     @Override
@@ -85,7 +83,7 @@ public class WeaponControllerRest implements WeaponController {
             //Calling HttpServletResponse#setStatus(int) is ignored.
             //Calling HttpServletResponse#sendError(int) causes response headers and body looking like error.
             throw new WebApplicationException(Response.Status.CREATED);
-        } catch (IllegalArgumentException ex) {
+        } catch (EJBException ex) {
             throw new BadRequestException(ex);
         }
     }

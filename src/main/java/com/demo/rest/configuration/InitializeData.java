@@ -1,5 +1,12 @@
 package com.demo.rest.configuration;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.ejb.EJB;
+import jakarta.ejb.Singleton;
+import jakarta.ejb.Startup;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
+import lombok.NoArgsConstructor;
 import com.demo.rest.modules.player.entity.Player;
 import com.demo.rest.modules.player.service.PlayerService;
 import com.demo.rest.modules.weapon.entity.Weapon;
@@ -7,55 +14,45 @@ import com.demo.rest.modules.weapon.service.WeaponService;
 import com.demo.rest.modules.weapontype.entity.DamageType;
 import com.demo.rest.modules.weapontype.entity.WeaponType;
 import com.demo.rest.modules.weapontype.service.WeaponTypeService;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.context.control.RequestContextController;
-import jakarta.inject.Inject;
 import lombok.SneakyThrows;
-import jakarta.enterprise.context.Initialized;
-import jakarta.enterprise.event.Observes;
 
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.UUID;
 
-@ApplicationScoped
+@Singleton
+@Startup
+@TransactionAttribute(value = TransactionAttributeType.NOT_SUPPORTED)
+@NoArgsConstructor
 public class InitializeData {
 
-    private final PlayerService playerService;
-    private final WeaponService weaponService;
-    private final WeaponTypeService weaponTypeService;
+    private PlayerService playerService;
+    private WeaponService weaponService;
+    private WeaponTypeService weaponTypeService;
 
-    /**
-     * The CDI container provides a built-in instance of {@link RequestContextController} that is dependent scoped for
-     * the purposes of activating and deactivating.
-     */
-    private final RequestContextController requestContextController;
-
-    @Inject
-    public InitializeData(
-            PlayerService playerService,
-            RequestContextController requestContextController,
-            WeaponService weaponService,
-            WeaponTypeService weaponTypeService
-    ) {
-        this.playerService = playerService;
-        this.requestContextController = requestContextController;
-        this.weaponService = weaponService;
-        this.weaponTypeService = weaponTypeService;
+    @EJB
+    public void setPlayerService(PlayerService service) {
+        this.playerService = service;
     }
 
-    public void contextInitialized(@Observes @Initialized(ApplicationScoped.class) Object init) {
-        init();
+    @EJB
+    public void setWeaponService(WeaponService service) {
+        this.weaponService = service;
     }
+
+    @EJB
+    public void setWeaponTypeService(WeaponTypeService service) {
+        this.weaponTypeService = service;
+    }
+
 
     /**
      * Initializes database with some example values. Should be called after creating this object. This object should be
      * created only once.
      */
+    @PostConstruct
     @SneakyThrows
     private void init() {
-
-        requestContextController.activate();// start request scope in order to inject request scoped repositories
 
         Player warrior = Player.builder()
                 .id(UUID.fromString("88dd8d51-8456-42ce-b6a0-61b2ed3e5e21"))
@@ -192,7 +189,6 @@ public class InitializeData {
             System.out.println(e.getMessage());
         }
 
-        requestContextController.deactivate();
     }
 
 

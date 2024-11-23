@@ -1,5 +1,6 @@
 package com.demo.rest.modules.weapontype.controller.implementation;
 
+import jakarta.ejb.EJB;
 import com.demo.rest.helpers.DtoFunctionFactory;
 import com.demo.rest.modules.weapontype.controller.api.WeaponTypeController;
 import com.demo.rest.modules.weapontype.dto.GetWeaponTypeResponse;
@@ -7,6 +8,7 @@ import com.demo.rest.modules.weapontype.dto.GetWeaponTypesResponse;
 import com.demo.rest.modules.weapontype.dto.PatchWeaponTypeRequest;
 import com.demo.rest.modules.weapontype.dto.PutWeaponTypeRequest;
 import com.demo.rest.modules.weapontype.service.WeaponTypeService;
+import jakarta.ejb.EJBException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
@@ -25,7 +27,7 @@ import java.util.UUID;
 @Path("")
 public class WeaponTypeControllerRest implements WeaponTypeController {
 
-    private final WeaponTypeService service;
+    private WeaponTypeService service;
     private final DtoFunctionFactory factory;
 
     /**
@@ -46,12 +48,15 @@ public class WeaponTypeControllerRest implements WeaponTypeController {
 
     @Inject
     public WeaponTypeControllerRest(
-            WeaponTypeService weaponTypeService,
             DtoFunctionFactory factory,
             @SuppressWarnings("CdiInjectionPointsInspection") UriInfo uriInfo) {
-        this.service = weaponTypeService;
         this.factory = factory;
         this.uriInfo = uriInfo;
+    }
+
+    @EJB
+    public void setService(WeaponTypeService service) {
+        this.service = service;
     }
 
     @Override
@@ -81,7 +86,7 @@ public class WeaponTypeControllerRest implements WeaponTypeController {
             //Calling HttpServletResponse#sendError(int) causes response headers and body looking like error.
             throw new WebApplicationException(Response.Status.CREATED);
 
-        } catch (IllegalArgumentException ex) {
+        } catch (EJBException ex) {
             throw new BadRequestException(ex);
         }
     }

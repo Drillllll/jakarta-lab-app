@@ -3,8 +3,6 @@ package com.demo.rest.modules.player.service;
 import com.demo.rest.crypto.Pbkdf2PasswordHash;
 import com.demo.rest.modules.player.entity.Player;
 import com.demo.rest.modules.player.repository.api.PlayerRepository;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.transaction.Transactional;
 import jakarta.inject.Inject;
 import lombok.NoArgsConstructor;
 import jakarta.ws.rs.NotFoundException;
@@ -18,8 +16,11 @@ import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import jakarta.ejb.LocalBean;
+import jakarta.ejb.Stateless;
 
-@ApplicationScoped
+@LocalBean
+@Stateless
 @NoArgsConstructor(force = true)
 public class PlayerService {
 
@@ -66,7 +67,6 @@ public class PlayerService {
         return repository.findAll();
     }
 
-    @Transactional
     public void create(Player player) {
         if (repository.find(player.getId()).isPresent()) {
             throw new IllegalArgumentException("player already exists.");
@@ -81,7 +81,6 @@ public class PlayerService {
                 .orElse(false);
     }
 
-    @Transactional
     public void updatePicture(UUID id, InputStream is) {
         repository.find(id).ifPresent(player -> {
             try {
@@ -126,7 +125,6 @@ public class PlayerService {
         }
     }
 
-    @Transactional
     // [pictures-in-files] get rid of
     private void deletePictureFile(UUID id) {
         String filename = id.toString() + ".jpg";
@@ -149,12 +147,10 @@ public class PlayerService {
         });
     }
 
-    @Transactional
     public void delete(UUID id) {
         repository.delete(repository.find(id).orElseThrow());
     }
 
-    @Transactional
     public void update(Player player) {
        repository.update(player);
     }
