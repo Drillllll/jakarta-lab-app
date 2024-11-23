@@ -19,7 +19,7 @@ public interface PlayerController {
     GetPlayersResponse getPlayers();
 
     @GET
-    @Path("/playeers/{id}")
+    @Path("/players/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     GetPlayerResponse getPlayer(@PathParam("id") UUID id);
 

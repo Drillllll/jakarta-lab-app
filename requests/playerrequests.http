@@ -73,4 +73,4 @@ Content-Type: application/json
 GET http://localhost:9080/jakarta-lab-app-1.0/api/players/391a9234-d715-4feb-8624-ae9cebd0dbe4
 
 ### DELETE created player (not implemented) will have to delete all other connected entities
-# DELETE http://localhost:9080/jakarta-lab-app-1.0/api/players/391a9234-d715-4feb-8624-ae9cebd0dbe4
+DELETE http://localhost:9080/jakarta-lab-app-1.0/api/players/391a9234-d715-4feb-8624-ae9cebd0dbe4
