@@ -1,6 +1,14 @@
-package com.demo.rest.modules.player.dto;
+package com.demo.rest.modules.player.model;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.Singular;
+import lombok.ToString;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,7 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
 @EqualsAndHashCode
-public class GetPlayersResponse {
+public class PlayersModel {
 
     @Getter
     @Setter
@@ -25,12 +33,12 @@ public class GetPlayersResponse {
 
         private UUID id;
         private String login;
-        private String username;
-        private String heroName;
 
-        private List<String> roles;
     }
 
+    /**
+     * List of users.
+     */
     @Singular
     private List<Player> players;
 }

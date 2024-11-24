@@ -6,6 +6,7 @@ import com.demo.rest.modules.weapontype.entity.WeaponType;
 import com.demo.rest.repository.api.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface WeaponRepository extends Repository<Weapon, UUID> {
@@ -14,4 +15,5 @@ public interface WeaponRepository extends Repository<Weapon, UUID> {
 
     List<Weapon> findAllByWeaponType(WeaponType weaponType);
 
+    Optional<Weapon> findByIdAndPLayer(UUID id, Player player);
 }

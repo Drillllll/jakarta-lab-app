@@ -3,6 +3,7 @@ package com.demo.rest.modules.player.dto;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -21,4 +22,6 @@ public class GetPlayerResponse {
     private LocalDate birthDate;
 
     private String heroName;
+
+    private List<String> roles;
 }

@@ -1,5 +1,8 @@
 package com.demo.rest.modules.weapontype.service;
 
+import com.demo.rest.modules.player.entity.PlayerRoles;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import com.demo.rest.modules.weapontype.entity.WeaponType;
@@ -32,18 +35,22 @@ public class WeaponTypeService {
         return weaponType;*/
     }
 
+    @PermitAll
     public List<WeaponType> findAll() {
         return repository.findAll();
     }
 
+    @RolesAllowed(PlayerRoles.ADMIN)
     public void create(WeaponType weaponType) {
         repository.create(weaponType);
     }
 
+    @RolesAllowed(PlayerRoles.ADMIN)
     public void delete(UUID id) {
         repository.delete(repository.find(id).orElseThrow());
     }
 
+    @RolesAllowed(PlayerRoles.ADMIN)
     public void update(WeaponType weaponType) {
         repository.update(weaponType);
     }

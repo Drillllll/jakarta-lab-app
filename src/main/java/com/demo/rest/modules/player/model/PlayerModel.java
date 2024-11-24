@@ -1,6 +1,5 @@
-package com.demo.rest.modules.weapon.model;
+package com.demo.rest.modules.player.model;
 
-import com.demo.rest.modules.player.model.PlayerModel;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @Builder
@@ -17,13 +18,7 @@ import lombok.ToString;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
 @EqualsAndHashCode
-public class WeaponEditModel {
-
-    private String name;
-    private Integer damage;
-    private Integer weight;
-    private Integer value;
-
-    private PlayerModel player;
-
+public class PlayerModel {
+    private UUID id;
+    private String login;
 }

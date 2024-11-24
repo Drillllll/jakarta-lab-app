@@ -1,5 +1,7 @@
 package com.demo.rest.modules.weapontype.controller.implementation;
 
+import com.demo.rest.modules.player.entity.PlayerRoles;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
 import com.demo.rest.helpers.DtoFunctionFactory;
 import com.demo.rest.modules.weapontype.controller.api.WeaponTypeController;
@@ -91,6 +93,7 @@ public class WeaponTypeControllerRest implements WeaponTypeController {
         }
     }
 
+    @RolesAllowed(PlayerRoles.ADMIN)//Secure implementation, not the interface
     @Override
     public void deleteWeaponType(UUID id) {
         service.find(id).ifPresentOrElse(

@@ -16,8 +16,6 @@ public class PutPlayerRequest {
     private String login;
     private String username;
     private LocalDate birthDate;
-
     private String heroName;
-
     private String password;
 }

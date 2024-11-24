@@ -1,5 +1,6 @@
 package com.demo.rest.modules.weapon.model;
 
+import com.demo.rest.modules.player.entity.Player;
 import com.demo.rest.modules.weapon.entity.Weapon;
 import lombok.SneakyThrows;
 
@@ -10,14 +11,17 @@ public class UpdateWeaponWithModelFunction implements BiFunction<Weapon, WeaponE
 
     @Override
     @SneakyThrows
-    public Weapon apply(Weapon entity, WeaponEditModel request) {
+    public Weapon apply(Weapon entity, WeaponEditModel model) {
         return Weapon.builder()
                 .id(entity.getId())
-                .name(request.getName())
-                .weight(request.getWeight())
-                .value(request.getValue())
-                .damage(request.getDamage())
+                .name(model.getName())
+                .weight(model.getWeight())
+                .value(model.getValue())
+                .damage(model.getDamage())
                 .weaponType(entity.getWeaponType())
+                .player(Player.builder()
+                        .id(model.getPlayer().getId())
+                        .build())
                 .build();
     }
 }

@@ -16,6 +16,7 @@ public class PlayersToResponseFunction implements Function<List<Player>, GetPlay
                                 .login(player.getLogin())
                                 .username(player.getUsername())
                                 .heroName(player.getHeroName())
+                                .roles(player.getRoles())
                                 .build())
                         .toList())
                 .build();

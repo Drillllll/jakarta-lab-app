@@ -1,0 +1,158 @@
+//admin
+//YWRtaW4tc2VydmljZTphZG1pbmFkbWlu
+
+//Warrior
+//YWR2ZW50dXJlckBnYW1lLmNvbTppTG92ZUtpbGxpbmdEcmFnb25zJiE=
+
+
+
+// TESTING INSTRUCTION's USE CASES
+
+//******************//only admin can add and delete weapon types
+
+### PUT new weapontype as admin
+// @no-cookie-jar
+PUT http://localhost:9080/jakarta-lab-app-1.0/api/weapontypes/6abd5ba8-37ff-4c0c-8e75-b3baa6632e05
+Content-Type: application/json
+Authorization: Basic YWRtaW4tc2VydmljZTphZG1pbmFkbWlu
+
+{
+  "name": "One Handed Sword",
+  "speed": "3.4",
+  "isTwoHanded": "false",
+  "damageType": "PHYSICAL"
+}
+
+### GET created weapontype as admin
+// @no-cookie-jar
+GET http://localhost:9080/jakarta-lab-app-1.0/api/weapontypes/6abd5ba8-37ff-4c0c-8e75-b3baa6632e05
+Authorization: Basic YWRtaW4tc2VydmljZTphZG1pbmFkbWlu
+
+### DELETE WEAPON TYPE as admin
+// @no-cookie-jar
+DELETE http://localhost:9080/jakarta-lab-app-1.0/api/weapontypes/6abd5ba8-37ff-4c0c-8e75-b3baa6632e05
+Authorization: Basic YWRtaW4tc2VydmljZTphZG1pbmFkbWlu
+
+### PUT new weapontype as player - error
+// @no-cookie-jar
+PUT http://localhost:9080/jakarta-lab-app-1.0/api/weapontypes/6abd5ba8-37ff-4c0c-8e75-b3baa6632e05
+Content-Type: application/json
+Authorization: Basic YWR2ZW50dXJlckBnYW1lLmNvbTppTG92ZUtpbGxpbmdEcmFnb25zJiE=
+
+{
+  "name": "One Handed Sword",
+  "speed": "3.4",
+  "isTwoHanded": "false",
+  "damageType": "PHYSICAL"
+}
+
+### DELETE WEAPON TYPE as player - error
+// @no-cookie-jar
+DELETE http://localhost:9080/jakarta-lab-app-1.0/api/weapontypes/6abd5ba8-37ff-4c0c-8e75-b3baa6632e05
+Authorization: Basic YWR2ZW50dXJlckBnYW1lLmNvbTppTG92ZUtpbGxpbmdEcmFnb25zJiE=
+
+//******************//player can view all weapon types
+
+### GET all weapontypes as player
+// @no-cookie-jar
+GET http://localhost:9080/jakarta-lab-app-1.0/api/weapontypes
+Authorization: Basic YWR2ZW50dXJlckBnYW1lLmNvbTppTG92ZUtpbGxpbmdEcmFnb25zJiE=
+
+//******************//everyone can add a new player
+
+### PUT new player
+// @no-cookie-jar
+PUT http://localhost:9080/jakarta-lab-app-1.0/api/players/391a9234-d715-4feb-8624-ae9cebd0dbe4
+Content-Type: application/json
+
+{
+  "login": "vegabond@game.com",
+  "username": "V3gaBOND",
+  "birthDate": "1990-01-01",
+  "heroName": "SneakyThief",
+  "password": "Shhhh!!!Quiet"
+}
+
+### GET all players
+// @no-cookie-jar
+GET http://localhost:9080/jakarta-lab-app-1.0/api/players
+Authorization: Basic YWRtaW4tc2VydmljZTphZG1pbmFkbWlu
+
+//******************//admin can view all weapons
+
+### GET all weapons as admin
+// @no-cookie-jar
+GET http://localhost:9080/jakarta-lab-app-1.0/api/weapons
+Authorization: Basic YWRtaW4tc2VydmljZTphZG1pbmFkbWlu
+
+
+//******************//player can only view his weapons
+
+### GET all weapons as player
+// @no-cookie-jar
+GET http://localhost:9080/jakarta-lab-app-1.0/api/weapons
+Authorization: Basic YWR2ZW50dXJlckBnYW1lLmNvbTppTG92ZUtpbGxpbmdEcmFnb25zJiE=
+
+//******************//admin can add and delete all elements
+
+### PUT new weapon as admin
+// @no-cookie-jar
+PUT http://localhost:9080/jakarta-lab-app-1.0/api/weapons/73e54c57-0e7d-4f03-bcd2-5385877f2d1b
+Authorization: Basic YWRtaW4tc2VydmljZTphZG1pbmFkbWlu
+Content-Type: application/json
+
+{
+  "name": "Bow of The Shadows",
+  "damage": "95",
+  "weight": "6",
+  "value": "1900",
+  "weaponType": "cdfbd2ad-7c1e-48d7-9f91-2d6d0c089b60",
+  "player": "665e4aba-0640-49c2-b71f-4ddf1f9674ba"
+}
+
+### GET created weapon as admin
+// @no-cookie-jar
+GET http://localhost:9080/jakarta-lab-app-1.0/api/weapons/73e54c57-0e7d-4f03-bcd2-5385877f2d1b
+Authorization: Basic YWRtaW4tc2VydmljZTphZG1pbmFkbWlu
+
+### DELETE created weapon as player (not the owner)
+// @no-cookie-jar
+DELETE http://localhost:9080/jakarta-lab-app-1.0/api/weapons/73e54c57-0e7d-4f03-bcd2-5385877f2d1b
+Authorization: Basic YWR2ZW50dXJlckBnYW1lLmNvbTppTG92ZUtpbGxpbmdEcmFnb25zJiE=
+
+### DELETE created weapon as admin
+// @no-cookie-jar
+DELETE http://localhost:9080/jakarta-lab-app-1.0/api/weapons/73e54c57-0e7d-4f03-bcd2-5385877f2d1b
+Authorization: Basic YWRtaW4tc2VydmljZTphZG1pbmFkbWlu
+
+
+//******************// player can add elements
+
+### PUT new weapon as player
+// @no-cookie-jar
+PUT http://localhost:9080/jakarta-lab-app-1.0/api/weapons/cbfef27d-e38b-4651-ad1e-0385d25cd89d
+Authorization: Basic YWR2ZW50dXJlckBnYW1lLmNvbTppTG92ZUtpbGxpbmdEcmFnb25zJiE=
+Content-Type: application/json
+
+{
+  "name": "Sword of madness",
+  "damage": "40",
+  "weight": "2",
+  "value": "300",
+  "weaponType": "ef47b366-7352-417f-a232-c530e65d7226"
+}
+
+### GET created weapon as player
+// @no-cookie-jar
+GET http://localhost:9080/jakarta-lab-app-1.0/api/weapons/cbfef27d-e38b-4651-ad1e-0385d25cd89d
+Authorization: Basic YWR2ZW50dXJlckBnYW1lLmNvbTppTG92ZUtpbGxpbmdEcmFnb25zJiE=
+
+### GET created weapon as player (all his weapons)
+// @no-cookie-jar
+GET http://localhost:9080/jakarta-lab-app-1.0/api/weapons
+Authorization: Basic YWR2ZW50dXJlckBnYW1lLmNvbTppTG92ZUtpbGxpbmdEcmFnb25zJiE=
+
+### DELETE created weapon as player (owner)
+// @no-cookie-jar
+DELETE http://localhost:9080/jakarta-lab-app-1.0/api/weapons/cbfef27d-e38b-4651-ad1e-0385d25cd89d
+Authorization: Basic YWR2ZW50dXJlckBnYW1lLmNvbTppTG92ZUtpbGxpbmdEcmFnb25zJiE=

@@ -81,7 +81,7 @@ public class WeaponCreate implements Serializable {
     }
 
     public String saveAction() {
-        weaponService.create(factory.modelToWeapon().apply(weapon));
+        weaponService.createForCallerPrincipal(factory.modelToWeapon().apply(weapon));
         conversation.end();
         return "/weapontype/weapontype_list.xhtml?faces-redirect=true";
     }

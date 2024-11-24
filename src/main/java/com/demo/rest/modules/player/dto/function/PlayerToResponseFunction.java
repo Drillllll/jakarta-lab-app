@@ -14,6 +14,7 @@ public class PlayerToResponseFunction  implements Function<Player, GetPlayerResp
                 .username(player.getUsername())
                 .birthDate(player.getBirthDate())
                 .heroName(player.getHeroName())
+                .roles(player.getRoles())
                 .build();
     }
 }

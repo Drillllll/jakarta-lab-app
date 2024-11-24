@@ -1,6 +1,9 @@
 package com.demo.rest.modules.player.service;
 
-import com.demo.rest.crypto.Pbkdf2PasswordHash;
+import com.demo.rest.modules.player.entity.PlayerRoles;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import com.demo.rest.modules.player.entity.Player;
 import com.demo.rest.modules.player.repository.api.PlayerRepository;
 import jakarta.inject.Inject;
@@ -33,7 +36,8 @@ public class PlayerService {
     private final Path pictureDirectory;
 
     @Inject
-    public PlayerService(PlayerRepository repository, Pbkdf2PasswordHash passwordHash) {
+    public PlayerService(PlayerRepository repository,
+                         @SuppressWarnings("CdiInjectionPointsInspection")Pbkdf2PasswordHash passwordHash) {
         this.repository = repository;
         this.passwordHash = passwordHash;
 
@@ -55,26 +59,35 @@ public class PlayerService {
         }
     }
 
+    @RolesAllowed(PlayerRoles.ADMIN)
     public Optional<Player> find(UUID id) {
         return repository.find(id);
     }
 
+    @RolesAllowed(PlayerRoles.ADMIN)
     public Optional<Player> find(String login) {
         return repository.findByLogin(login);
     }
 
+    @RolesAllowed(PlayerRoles.ADMIN)
     public List<Player> findAll() {
         return repository.findAll();
     }
 
+    @PermitAll
     public void create(Player player) {
         if (repository.find(player.getId()).isPresent()) {
             throw new IllegalArgumentException("player already exists.");
+        }
+
+        if(player.getRoles() == null || player.getRoles().isEmpty() ) {
+            player.setRoles(List.of(PlayerRoles.PLAYER));
         }
         player.setPassword(passwordHash.generate(player.getPassword().toCharArray()));
         repository.create(player);
     }
 
+    @PermitAll
     public boolean verifyPassword(String login, String password) {
         return find(login)
                 .map(player -> passwordHash.verify(password.toCharArray(), player.getPassword()))
@@ -147,10 +160,12 @@ public class PlayerService {
         });
     }
 
+    @RolesAllowed(PlayerRoles.ADMIN)
     public void delete(UUID id) {
         repository.delete(repository.find(id).orElseThrow());
     }
 
+    @RolesAllowed(PlayerRoles.ADMIN)
     public void update(Player player) {
        repository.update(player);
     }

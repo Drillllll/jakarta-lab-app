@@ -1,7 +1,6 @@
 package com.demo.rest.modules.player.entity;
 
 import com.demo.rest.modules.weapon.entity.Weapon;
-import lombok.*;
 import lombok.experimental.SuperBuilder;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -11,11 +10,24 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Table;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.JoinColumn;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+
 
 @Getter
 @Setter
@@ -52,4 +64,9 @@ public class Player implements Serializable {
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "player", cascade = CascadeType.REMOVE)
     private List<Weapon> weapons;
+
+    @CollectionTable(name = "players__roles", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "role")
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles;
 }

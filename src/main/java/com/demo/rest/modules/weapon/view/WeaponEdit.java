@@ -54,7 +54,7 @@ public class WeaponEdit implements Serializable {
      * field and initialized during init of the view.
      */
     public void init() throws IOException {
-        Optional<Weapon> weapon = service.find(id);
+        Optional<Weapon> weapon = service.findForCallerPrincipal(id);
         if (weapon.isPresent()) {
             this.weapon = factory.weaponToEditModel().apply(weapon.get());
         } else {

@@ -6,6 +6,7 @@ import com.demo.rest.modules.weapon.repository.api.WeaponRepository;
 import com.demo.rest.modules.weapontype.entity.WeaponType;
 import jakarta.enterprise.context.Dependent;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 
 
@@ -57,6 +58,18 @@ public class WeaponPersistenceRepository implements WeaponRepository {
         return em.createQuery("select w from Weapon w where w.weaponType = :weaponType", Weapon.class)
                 .setParameter("weaponType", weaponType)
                 .getResultList();
+    }
+
+    @Override
+    public Optional<Weapon> findByIdAndPLayer(UUID id, Player player) {
+        try {
+            return Optional.of(em.createQuery("select w from Weapon w where w.id = :id and w.player = :player", Weapon.class)
+                    .setParameter("player", player)
+                    .setParameter("id", id)
+                    .getSingleResult());
+        } catch (NoResultException ex) {
+            return Optional.empty();
+        }
     }
 
     @Override

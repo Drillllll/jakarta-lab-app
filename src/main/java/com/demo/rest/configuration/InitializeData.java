@@ -1,12 +1,13 @@
 package com.demo.rest.configuration;
 
+import com.demo.rest.modules.player.entity.PlayerRoles;
 import jakarta.annotation.PostConstruct;
-import jakarta.ejb.EJB;
-import jakarta.ejb.Singleton;
-import jakarta.ejb.Startup;
-import jakarta.ejb.TransactionAttribute;
-import jakarta.ejb.TransactionAttributeType;
+import jakarta.annotation.security.DeclareRoles;
+import jakarta.ejb.*;
+import jakarta.annotation.security.RunAs;
 import lombok.NoArgsConstructor;
+import jakarta.inject.Inject;
+import jakarta.security.enterprise.SecurityContext;
 import com.demo.rest.modules.player.entity.Player;
 import com.demo.rest.modules.player.service.PlayerService;
 import com.demo.rest.modules.weapon.entity.Weapon;
@@ -18,17 +19,25 @@ import lombok.SneakyThrows;
 
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Singleton
 @Startup
 @TransactionAttribute(value = TransactionAttributeType.NOT_SUPPORTED)
 @NoArgsConstructor
+@DependsOn("InitializeAdminService")
+@DeclareRoles({PlayerRoles.ADMIN, PlayerRoles.PLAYER})
+@RunAs(PlayerRoles.ADMIN)
 public class InitializeData {
 
     private PlayerService playerService;
     private WeaponService weaponService;
     private WeaponTypeService weaponTypeService;
+
+    @Inject
+    private SecurityContext securityContext;
 
     @EJB
     public void setPlayerService(PlayerService service) {
@@ -54,6 +63,7 @@ public class InitializeData {
     @SneakyThrows
     private void init() {
 
+
         Player warrior = Player.builder()
                 .id(UUID.fromString("88dd8d51-8456-42ce-b6a0-61b2ed3e5e21"))
                 .login("adventurer@game.com")
@@ -61,6 +71,7 @@ public class InitializeData {
                 .username("ADV3nturer")
                 .birthDate(LocalDate.of(2000, 10, 10))
                 .heroName("Dragon Slayer")
+                .roles(List.of(PlayerRoles.PLAYER))
                 .build();
 
         Player mage = Player.builder()
@@ -70,6 +81,7 @@ public class InitializeData {
                 .username("RpgEnjoy3r")
                 .birthDate(LocalDate.of(2004, 2, 1))
                 .heroName("Powerful Mage")
+                .roles(List.of(PlayerRoles.PLAYER))
                 .build();
 
         Player assassin = Player.builder()
@@ -79,6 +91,7 @@ public class InitializeData {
                 .username("SwordToTh3THROAT")
                 .birthDate(LocalDate.of(2003, 7, 17))
                 .heroName("Ruthless Assassin")
+                .roles(List.of(PlayerRoles.PLAYER))
                 .build();
 
         Player archer = Player.builder()
@@ -88,6 +101,7 @@ public class InitializeData {
                 .username("OneSh0T1Kill")
                 .birthDate(LocalDate.of(2004, 2, 1))
                 .heroName("Patient Archer")
+                .roles(List.of(PlayerRoles.PLAYER))
                 .build();
 
 
@@ -167,26 +181,27 @@ public class InitializeData {
                 .build();
 
 
+        if (playerService.find("adventurer@game.com").isEmpty()) {
 
-        try {
-            playerService.create(warrior);
-            playerService.create(mage);
-            playerService.create(assassin);
-            playerService.create(archer);
+            try {
+                playerService.create(warrior);
+                playerService.create(mage);
+                playerService.create(assassin);
+                playerService.create(archer);
 
-            weaponTypeService.create(twoHandedSword);
-            weaponTypeService.create(wand);
-            weaponTypeService.create(dagger);
-            weaponTypeService.create(bow);
+                weaponTypeService.create(twoHandedSword);
+                weaponTypeService.create(wand);
+                weaponTypeService.create(dagger);
+                weaponTypeService.create(bow);
 
-            weaponService.create(twoHandedSword1);
-            weaponService.create(dagger1);
-            weaponService.create(bow1);
-            weaponService.create(wand1);
-        }
-        catch (Exception e) {
-            System.out.println("EXCEPTION WHEN INITIALIZING - DATA ALREADY EXIST IN THE DATABASE");
-            System.out.println(e.getMessage());
+                weaponService.create(twoHandedSword1);
+                weaponService.create(dagger1);
+                weaponService.create(bow1);
+                weaponService.create(wand1);
+            } catch (Exception e) {
+                System.out.println("EXCEPTION WHEN INITIALIZING - DATA ALREADY EXIST IN THE DATABASE");
+                System.out.println(e.getMessage());
+            }
         }
 
     }

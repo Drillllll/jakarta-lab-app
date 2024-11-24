@@ -1,9 +1,11 @@
 package com.demo.rest.modules.weapon.controller.implementation;
 
+import com.demo.rest.modules.player.entity.PlayerRoles;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
+import jakarta.ejb.EJBAccessException;
 import jakarta.ejb.EJBException;
-import jakarta.ws.rs.BadRequestException;
-import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.*;
 import com.demo.rest.helpers.DtoFunctionFactory;
 import com.demo.rest.modules.weapon.controller.api.WeaponController;
 import com.demo.rest.modules.weapon.dto.GetWeaponResponse;
@@ -12,9 +14,7 @@ import com.demo.rest.modules.weapon.dto.PatchWeaponRequest;
 import com.demo.rest.modules.weapon.dto.PutWeaponRequest;
 import com.demo.rest.modules.weapon.service.WeaponService;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Path;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
@@ -23,6 +23,7 @@ import jakarta.ws.rs.core.UriInfo;
 import java.util.UUID;
 
 @Path("")
+@RolesAllowed(PlayerRoles.PLAYER)//Secure implementation, not the interface
 public class WeaponControllerRest implements WeaponController {
 
     /**
@@ -59,7 +60,6 @@ public class WeaponControllerRest implements WeaponController {
 
     @Override
     public GetWeaponsResponse getWeapons() {
-        System.out.println("&&&&&&&& GET WEAPONS =========");
         return factory.weaponsToResponse().apply(service.findAll());
     }
 
@@ -73,7 +73,7 @@ public class WeaponControllerRest implements WeaponController {
     @Override
     public void putWeapon(UUID id, PutWeaponRequest request) {
         try {
-            service.create(factory.requestToWeapon().apply(id, request));
+            service.createForCallerPrincipal(factory.requestToWeapon().apply(id, request));
             //This can be done with Response builder but requires method different return type.
             response.setHeader("Location", uriInfo.getBaseUriBuilder()
                     .path(WeaponController.class, "getWeapon")
@@ -91,7 +91,14 @@ public class WeaponControllerRest implements WeaponController {
     @Override
     public void deleteWeapon(UUID id) {
         service.find(id).ifPresentOrElse(
-                entity -> service.delete(id),
+                entity -> {
+                    try {
+                        service.delete(id);
+                    } catch (EJBAccessException ex) {
+                        System.out.println("WARNING" + ex.getMessage() + ex);
+                        throw new ForbiddenException(ex.getMessage());
+                    }
+                },
                 () -> {
                     throw new NotFoundException();
                 }
@@ -101,7 +108,14 @@ public class WeaponControllerRest implements WeaponController {
     @Override
     public void patchWeapon(UUID id, PatchWeaponRequest request) {
         service.find(id).ifPresentOrElse(
-                entity -> service.update(factory.updateWeapon().apply(entity, request)),
+                entity -> {
+                    try {
+                        service.update(factory.updateWeapon().apply(entity, request));
+                    } catch (EJBAccessException ex) {
+                        System.out.println("WARNING" + ex.getMessage() + ex);
+                        throw new ForbiddenException(ex.getMessage());
+                    }
+                },
                 () -> {
                     throw new NotFoundException();
                 }
