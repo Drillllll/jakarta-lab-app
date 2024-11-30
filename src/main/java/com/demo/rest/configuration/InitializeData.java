@@ -64,9 +64,19 @@ public class InitializeData {
     private void init() {
 
 
+        Player admin = Player.builder()
+                .id(UUID.fromString("0cc37711-5496-474c-b22c-ea0553d29979"))
+                .login("admin")
+                .password("admin")
+                .username("admin")
+                .birthDate(LocalDate.of(2004, 1, 1))
+                .heroName("admin")
+                .roles(List.of(PlayerRoles.ADMIN, PlayerRoles.PLAYER))
+                .build();
+
         Player warrior = Player.builder()
                 .id(UUID.fromString("88dd8d51-8456-42ce-b6a0-61b2ed3e5e21"))
-                .login("adventurer@game.com")
+                .login("warrior@game.com")
                 .password("iLoveKillingDragons&!")
                 .username("ADV3nturer")
                 .birthDate(LocalDate.of(2000, 10, 10))
@@ -76,7 +86,7 @@ public class InitializeData {
 
         Player mage = Player.builder()
                 .id(UUID.fromString("d59d1288-b330-43f5-b519-3537c7b84806"))
-                .login("rpg-enjoyer@game.com")
+                .login("mage@game.com")
                 .password("magicIsInTheAir123#!")
                 .username("RpgEnjoy3r")
                 .birthDate(LocalDate.of(2004, 2, 1))
@@ -86,7 +96,7 @@ public class InitializeData {
 
         Player assassin = Player.builder()
                 .id(UUID.fromString("665e4aba-0640-49c2-b71f-4ddf1f9674ba"))
-                .login("swoard-to-the-throat@game.com")
+                .login("assassin@game.com")
                 .password("iWill!burry)YouALivE#")
                 .username("SwordToTh3THROAT")
                 .birthDate(LocalDate.of(2003, 7, 17))
@@ -96,7 +106,7 @@ public class InitializeData {
 
         Player archer = Player.builder()
                 .id(UUID.fromString("944cc65e-1942-4c8a-a12e-cfffeef94476"))
-                .login("one-shot-one-kill@game.com")
+                .login("archer@game.com")
                 .password("aim!!+Twice#Shoot#Once")
                 .username("OneSh0T1Kill")
                 .birthDate(LocalDate.of(2004, 2, 1))
@@ -181,11 +191,12 @@ public class InitializeData {
                 .build();
 
 
-        if (playerService.find("adventurer@game.com").isEmpty()) {
+        if (playerService.find("warrior@game.com").isEmpty()) {
 
             try {
                 playerService.create(warrior);
                 playerService.create(mage);
+                playerService.create(admin);
                 playerService.create(assassin);
                 playerService.create(archer);
 

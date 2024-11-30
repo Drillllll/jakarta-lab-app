@@ -9,6 +9,7 @@ import com.demo.rest.modules.weapontype.entity.WeaponType;
 import com.demo.rest.modules.weapontype.repository.api.WeaponTypeRepository;
 import jakarta.inject.Inject;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +36,7 @@ public class WeaponTypeService {
         return weaponType;*/
     }
 
-    @PermitAll
+    @RolesAllowed(PlayerRoles.PLAYER)
     public List<WeaponType> findAll() {
         return repository.findAll();
     }

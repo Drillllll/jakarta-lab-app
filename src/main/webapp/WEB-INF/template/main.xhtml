@@ -26,6 +26,21 @@
                 <h:graphicImage class="me-3" style="width: 200px; height: 100px; object-fit: contain;" alt="weapons collection"
                                 value="https://img.freepik.com/premium-photo/vector-set-medieval-weapons-isolated-black-background-collection-medieval-weapons_1057-145321.jpg"/>
                 <h1 class="mb-0">Weapon Collection</h1>
+
+                <h:form styleClass="container d-flex  align-items-center justify-content-end"
+                        rendered="#{facesContext.externalContext.userPrincipal != null}">
+                    Logged: <h:outputText value="#{facesContext.externalContext.userPrincipal.name}"/>
+                    <h:commandButton styleClass="btn btn-link" value="Logout"
+                                     action="#{playerLogout.logoutAction()}"/>
+                </h:form>
+
+                <h:form styleClass="container d-flex  align-items-center justify-content-end"
+                        rendered="#{facesContext.externalContext.userPrincipal == null}">
+                    <h:link styleClass="nav-link"
+                            outcome="/authentication/custom/login.xhtml">Login</h:link>
+                </h:form>
+
+
             </header>
 
             <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
@@ -38,6 +53,13 @@
                             <h:link styleClass="nav-link"
                                     outcome="/weapontype/weapontype_list.xhtml">Weapon Types</h:link>
                         </li>
+
+                        <h:panelGroup rendered="#{facesContext.externalContext.isUserInRole('admin')}">
+                            <li class="nav-item">
+                                <h:link styleClass="nav-link"
+                                        outcome="/player/player_list.xhtml">Players</h:link>
+                            </li>
+                        </h:panelGroup>
                     </ul>
                 </div>
             </nav>

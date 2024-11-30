@@ -15,5 +15,7 @@ public interface WeaponRepository extends Repository<Weapon, UUID> {
 
     List<Weapon> findAllByWeaponType(WeaponType weaponType);
 
+    List<Weapon> findAllByWeaponTypeAndPlayer(WeaponType weaponType, Player player);
+
     Optional<Weapon> findByIdAndPLayer(UUID id, Player player);
 }

@@ -58,7 +58,7 @@ public class WeaponEdit implements Serializable {
         if (weapon.isPresent()) {
             this.weapon = factory.weaponToEditModel().apply(weapon.get());
         } else {
-            FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_NOT_FOUND, "weapon not found");
+            FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_NOT_FOUND, "weapon not found or player is not the owner or the weapon");
         }
     }
 

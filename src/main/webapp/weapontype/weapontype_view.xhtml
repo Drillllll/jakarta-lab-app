@@ -48,7 +48,7 @@
 
                 </div>
 
-                <h:dataTable value="#{weaponTypeView.weapons.weapons}" var="weapon"
+                <h:dataTable id="weaponTable" value="#{weaponTypeView.weapons.weapons}" var="weapon"
                              styleClass="table align-middle mb-0 bg-white" headerClass="bg-light">
 
                     <h:column>
@@ -74,7 +74,9 @@
                         <f:facet name="header">Delete</f:facet>
                         <h:form>
                             <h:commandButton styleClass="btn" value="Delete"
-                                             action="#{weaponTypeView.deleteWeapon(weapon)}"/>
+                                             action="#{weaponTypeView.deleteWeapon(weapon)}">
+                                <f:ajax execute="@this" render=":weaponTable"/>
+                            </h:commandButton>
                         </h:form>
                     </h:column>
 

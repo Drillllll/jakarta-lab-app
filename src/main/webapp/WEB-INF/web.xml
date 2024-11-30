@@ -29,4 +29,43 @@
         <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
 
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>weapon</web-resource-name>
+            <url-pattern>/weapon/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>player</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>weapontype</web-resource-name>
+            <url-pattern>/weapontype/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>player</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <!--<security-constraint>
+        <web-resource-collection>
+            <web-resource-name>player</web-resource-name>
+            <url-pattern>/player/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>-->
+
+
+    <security-role>
+        <role-name>admin</role-name>
+    </security-role>
+
+    <security-role>
+        <role-name>player</role-name>
+    </security-role>
 </web-app>

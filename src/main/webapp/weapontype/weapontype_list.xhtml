@@ -11,7 +11,7 @@
         <article class="text--justified">
             <header><h2>Weapon Types</h2></header>
 
-            <h:dataTable value="#{weaponTypeList.weaponTypes.weaponTypes}" var="weaponType"
+            <h:dataTable id="weaponTypeTable" value="#{weaponTypeList.weaponTypes.weaponTypes}" var="weaponType"
                          styleClass="table align-middle mb-0 bg-white" headerClass="bg-light">
 
                 <h:column>
@@ -33,11 +33,13 @@
                     </h:link>
                 </h:column>-->
 
-                <h:column>
+                <h:column rendered="#{facesContext.externalContext.isUserInRole('admin')}">
                     <f:facet name="header">Delete</f:facet>
                     <h:form>
                         <h:commandButton styleClass="btn" value="Delete"
-                                         action="#{weaponTypeList.deleteAction(weaponType)}"/>
+                                         action="#{weaponTypeList.deleteAction(weaponType)}">
+                            <f:ajax execute="@this" render=":weaponTypeTable"/>
+                        </h:commandButton>
                     </h:form>
                 </h:column>
 

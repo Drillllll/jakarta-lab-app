@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+
 @LocalBean
 @Stateless
 @NoArgsConstructor(force = true)
@@ -28,6 +29,7 @@ public class WeaponService {
     private final WeaponTypeRepository weaponTypeRepository;
 
     private final SecurityContext securityContext;
+
 
 
     @Inject
@@ -46,7 +48,9 @@ public class WeaponService {
 
     @RolesAllowed(PlayerRoles.PLAYER)
     public Optional<Weapon> find(UUID id) {
-        return weaponRepository.find(id);
+        Optional<Weapon> optWeapon =  weaponRepository.find(id);
+        checkAdminRoleOrOwner(optWeapon);
+        return optWeapon;
     }
 
     @RolesAllowed(PlayerRoles.PLAYER)
@@ -106,6 +110,9 @@ public class WeaponService {
         playerRepository.find(weapon.getPlayer().getId())
                 .ifPresent(player -> player.getWeapons().add(weapon));
 
+
+        /*LoggerFactory.getLogger(WeaponService.class).info("User: {} - Operation: CREATE - Weapon ID: {}",
+                securityContext.getCallerPrincipal().getName(), weapon.getId());*/
     }
 
     @RolesAllowed(PlayerRoles.PLAYER)
@@ -121,12 +128,18 @@ public class WeaponService {
     public void delete(UUID id) {
         checkAdminRoleOrOwner(weaponRepository.find(id));
         weaponRepository.delete(weaponRepository.find(id).orElseThrow());
+
+        //log.info("User: {} - Operation: DELETE - Weapon ID: {}",
+                //securityContext.getCallerPrincipal().getName(), id);
     }
 
     @RolesAllowed(PlayerRoles.PLAYER)
     public void update(Weapon weapon) {
         checkAdminRoleOrOwner(weaponRepository.find(weapon.getId()));
         weaponRepository.update(weapon);
+
+        //log.info("User: {} - Operation: UPDATE - Weapon ID: {}",
+                //securityContext.getCallerPrincipal().getName(), weapon.getId());
     }
 
 
@@ -136,10 +149,21 @@ public class WeaponService {
                 .map(weaponRepository::findAllByPlayer);
     }
 
-    @RolesAllowed(PlayerRoles.PLAYER)
+    /*@RolesAllowed(PlayerRoles.PLAYER)
     public  Optional<List<Weapon>> findAllByWeaponType(UUID id) {
         return weaponTypeRepository.find(id)
                 .map(weaponRepository::findAllByWeaponType);
+    }*/
+
+    @RolesAllowed(PlayerRoles.PLAYER)
+    public  Optional<List<Weapon>> findAllByWeaponType(UUID id) {
+
+        if(securityContext.isCallerInRole(PlayerRoles.ADMIN)) {
+            return weaponTypeRepository.find(id)
+                    .map(weaponRepository::findAllByWeaponType);
+        }
+        return weaponTypeRepository.find(id)
+                .map(weaponType -> weaponRepository.findAllByWeaponTypeAndPlayer(weaponType, playerRepository.findByLogin(securityContext.getCallerPrincipal().getName()).get()));
     }
 
     private void checkAdminRoleOrOwner(Optional<Weapon> weapon) throws EJBAccessException {

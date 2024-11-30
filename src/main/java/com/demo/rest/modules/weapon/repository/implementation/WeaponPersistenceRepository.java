@@ -61,6 +61,15 @@ public class WeaponPersistenceRepository implements WeaponRepository {
     }
 
     @Override
+    public List<Weapon> findAllByWeaponTypeAndPlayer(WeaponType weaponType, Player player) {
+        return em.createQuery("select w from Weapon w where w.weaponType = :weaponType and w.player = :player", Weapon.class)
+                .setParameter("weaponType", weaponType)
+                .setParameter("player", player)
+                .getResultList();
+    }
+
+
+    @Override
     public Optional<Weapon> findByIdAndPLayer(UUID id, Player player) {
         try {
             return Optional.of(em.createQuery("select w from Weapon w where w.id = :id and w.player = :player", Weapon.class)
