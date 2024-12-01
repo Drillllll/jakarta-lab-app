@@ -13,12 +13,14 @@ import jakarta.inject.Inject;
 import lombok.NoArgsConstructor;
 import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
+import lombok.extern.java.Log;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 
+@Log
 @LocalBean
 @Stateless
 @NoArgsConstructor(force = true)
@@ -111,8 +113,9 @@ public class WeaponService {
                 .ifPresent(player -> player.getWeapons().add(weapon));
 
 
-        /*LoggerFactory.getLogger(WeaponService.class).info("User: {} - Operation: CREATE - Weapon ID: {}",
-                securityContext.getCallerPrincipal().getName(), weapon.getId());*/
+        log.info(String.format("User: %s - Operation: CREATE - Weapon ID: %s",
+                securityContext.getCallerPrincipal().getName(), weapon.getId()));
+
     }
 
     @RolesAllowed(PlayerRoles.PLAYER)
@@ -129,8 +132,8 @@ public class WeaponService {
         checkAdminRoleOrOwner(weaponRepository.find(id));
         weaponRepository.delete(weaponRepository.find(id).orElseThrow());
 
-        //log.info("User: {} - Operation: DELETE - Weapon ID: {}",
-                //securityContext.getCallerPrincipal().getName(), id);
+        log.info(String.format("User: %s - Operation: DELETE - Weapon ID: %s",
+                securityContext.getCallerPrincipal().getName(), id));
     }
 
     @RolesAllowed(PlayerRoles.PLAYER)
@@ -138,8 +141,9 @@ public class WeaponService {
         checkAdminRoleOrOwner(weaponRepository.find(weapon.getId()));
         weaponRepository.update(weapon);
 
-        //log.info("User: {} - Operation: UPDATE - Weapon ID: {}",
-                //securityContext.getCallerPrincipal().getName(), weapon.getId());
+        log.info(String.format("User: %s - Operation: UPDATE - Weapon ID: %s",
+                securityContext.getCallerPrincipal().getName(), weapon.getId()));
+
     }
 
 
