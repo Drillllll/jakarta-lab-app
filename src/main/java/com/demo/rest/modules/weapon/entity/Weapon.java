@@ -1,7 +1,9 @@
 package com.demo.rest.modules.weapon.entity;
 
+import com.demo.rest.entity.VersionAndCreationDateAuditable;
 import com.demo.rest.modules.player.entity.Player;
 import com.demo.rest.modules.weapontype.entity.WeaponType;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -18,7 +20,7 @@ import java.util.UUID;
 @EqualsAndHashCode
 @Entity
 @Table(name = "weapons")
-public class Weapon implements Serializable {
+public class Weapon extends VersionAndCreationDateAuditable implements Serializable {
 
     @Id
     private UUID id;
@@ -37,6 +39,8 @@ public class Weapon implements Serializable {
     @ManyToOne
     @JoinColumn(name = "player_username")
     private Player player;
+
+
 }
 
 

@@ -5,11 +5,14 @@ import com.demo.rest.modules.weapon.entity.Weapon;
 import com.demo.rest.modules.weapon.model.WeaponEditModel;
 import com.demo.rest.modules.weapon.service.WeaponService;
 import jakarta.ejb.EJB;
+import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.persistence.OptimisticLockException;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.TransactionalException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,6 +31,8 @@ public class WeaponEdit implements Serializable {
 
     private final ModelFunctionFactory factory;
 
+    private final FacesContext facesContext;
+
 
     @Setter
     @Getter
@@ -37,11 +42,15 @@ public class WeaponEdit implements Serializable {
     @Getter
     private WeaponEditModel weapon;
 
+    @Getter
+    private WeaponEditModel unsavedWeapon;
+
 
 
     @Inject
-    public WeaponEdit(ModelFunctionFactory factory) {
+    public WeaponEdit(ModelFunctionFactory factory, FacesContext facesContext) {
         this.factory = factory;
+        this.facesContext = facesContext;
     }
 
     @EJB
@@ -62,10 +71,25 @@ public class WeaponEdit implements Serializable {
         }
     }
 
-    public String saveAction() {
-        service.update(factory.updateWeapon().apply(service.find(id).orElseThrow(), weapon));
+    public String saveAction() throws IOException {
+        /*service.update(factory.updateWeapon().apply(service.find(id).orElseThrow(), weapon));
         String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
-        return viewId + "?faces-redirect=true&includeViewParams=true";
+        return viewId + "?faces-redirect=true&includeViewParams=true";*/
+
+
+        try {
+            service.update(factory.updateWeapon().apply(service.find(id).orElseThrow(), weapon));
+            String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
+            return viewId + "?faces-redirect=true&includeViewParams=true";
+        } catch (Exception ex) {
+            if (ex.getCause() instanceof OptimisticLockException) {
+                unsavedWeapon = weapon;
+                init();
+                facesContext.addMessage(null, new FacesMessage("Version collision."));
+            }
+            return null;
+        }
+
     }
 
 }

@@ -1,12 +1,15 @@
 package com.demo.rest.modules.player.repository.implementation;
 
 import com.demo.rest.modules.player.entity.Player;
+import com.demo.rest.modules.player.entity.Player_;
 import com.demo.rest.modules.player.repository.api.PlayerRepository;
 import jakarta.enterprise.context.Dependent;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
-
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +41,11 @@ public class PlayerPersistenceRepository implements PlayerRepository {
 
     @Override
     public List<Player> findAll() {
-        return em.createQuery("select p from Player p", Player.class).getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Player> query = cb.createQuery(Player.class);
+        Root<Player> root = query.from(Player.class);
+        query.select(root);
+        return em.createQuery(query).getResultList();
     }
 
     @Override
@@ -59,9 +66,12 @@ public class PlayerPersistenceRepository implements PlayerRepository {
     @Override
     public Optional<Player> findByLogin(String login) {
         try {
-            return Optional.of(em.createQuery("select p from Player p where p.login = :login", Player.class)
-                    .setParameter("login", login)
-                    .getSingleResult());
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Player> query = cb.createQuery(Player.class);
+            Root<Player> root = query.from(Player.class);
+            query.select(root)
+                    .where(cb.equal(root.get(Player_.login), login));
+            return Optional.of(em.createQuery(query).getSingleResult());
         } catch (NoResultException ex) {
             return Optional.empty();
         }

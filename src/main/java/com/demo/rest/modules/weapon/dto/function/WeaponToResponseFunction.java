@@ -15,6 +15,7 @@ public class WeaponToResponseFunction implements Function<Weapon, GetWeaponRespo
                 .damage(entity.getDamage())
                 .value(entity.getValue())
                 .weight(entity.getWeight())
+                .version(entity.getVersion())
                 .build();
     }
 }

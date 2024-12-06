@@ -26,4 +26,6 @@ public class WeaponEditModel {
 
     private PlayerModel player;
 
+    private Long version;
+
 }

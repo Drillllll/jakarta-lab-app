@@ -5,7 +5,9 @@ import com.demo.rest.modules.weapontype.entity.WeaponType;
 import com.demo.rest.modules.weapontype.repository.api.WeaponTypeRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +33,11 @@ public class WeaponTypePersistenceRepository implements WeaponTypeRepository {
 
     @Override
     public List<WeaponType> findAll() {
-        return em.createQuery("select w from WeaponType w", WeaponType.class).getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<WeaponType> query = cb.createQuery(WeaponType.class);
+        Root<WeaponType> root = query.from(WeaponType.class);
+        query.select(root);
+        return em.createQuery(query).getResultList();
     }
 
     @Override
@@ -48,5 +54,4 @@ public class WeaponTypePersistenceRepository implements WeaponTypeRepository {
     public void update(WeaponType entity) {
         em.merge(entity);
     }
-
 }

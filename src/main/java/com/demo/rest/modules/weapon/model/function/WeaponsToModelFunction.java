@@ -15,6 +15,9 @@ public class WeaponsToModelFunction implements Function<List<Weapon>, WeaponsMod
                         .map(weapon -> WeaponsModel.Weapon.builder()
                                 .id(weapon.getId())
                                 .name(weapon.getName())
+                                .version(weapon.getVersion())
+                                .creationDateTime(weapon.getCreationDateTime())
+                                .updateDateTime(weapon.getUpdateDateTime())
                                 .build())
                         .toList())
                 .build();

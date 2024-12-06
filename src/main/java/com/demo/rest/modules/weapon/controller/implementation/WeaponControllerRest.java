@@ -5,6 +5,8 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBAccessException;
 import jakarta.ejb.EJBException;
+import jakarta.persistence.OptimisticLockException;
+import jakarta.transaction.TransactionalException;
 import jakarta.ws.rs.*;
 import com.demo.rest.helpers.DtoFunctionFactory;
 import com.demo.rest.modules.weapon.controller.api.WeaponController;
@@ -107,19 +109,27 @@ public class WeaponControllerRest implements WeaponController {
 
     @Override
     public void patchWeapon(UUID id, PatchWeaponRequest request) {
-        service.find(id).ifPresentOrElse(
-                entity -> {
-                    try {
-                        service.update(factory.updateWeapon().apply(entity, request));
-                    } catch (EJBAccessException ex) {
-                        System.out.println("WARNING" + ex.getMessage() + ex);
-                        throw new ForbiddenException(ex.getMessage());
+        try {
+            service.find(id).ifPresentOrElse(
+                    entity -> {
+                        try {
+                            service.update(factory.updateWeapon().apply(entity, request));
+                        } catch (EJBAccessException ex) {
+                            System.out.println("WARNING" + ex.getMessage() + ex);
+                            throw new ForbiddenException(ex.getMessage());
+                        }
+                    },
+                    () -> {
+                        throw new NotFoundException();
                     }
-                },
-                () -> {
-                    throw new NotFoundException();
-                }
-        );
+            );
+        }
+        catch (TransactionalException ex) {
+            if (ex.getCause() instanceof OptimisticLockException) {
+                throw new BadRequestException(ex.getCause());
+            }
+        }
+
     }
 
     @Override

@@ -15,4 +15,6 @@ public class PatchWeaponRequest {
     private Integer damage;
     private Integer weight;
     private Integer value;
+
+    private Long version;
 }

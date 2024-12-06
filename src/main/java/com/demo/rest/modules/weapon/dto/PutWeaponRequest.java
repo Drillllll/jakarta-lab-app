@@ -22,4 +22,6 @@ public class PutWeaponRequest {
 
     private UUID weaponType;
     private UUID player;
+
+    private Long version;
 }

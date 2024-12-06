@@ -19,4 +19,6 @@ public class GetWeaponResponse {
     private Integer weight;
     private Integer value;
 
+    private Long version;
+
 }

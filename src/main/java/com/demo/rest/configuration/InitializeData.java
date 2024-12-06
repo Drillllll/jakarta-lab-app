@@ -74,6 +74,16 @@ public class InitializeData {
                 .roles(List.of(PlayerRoles.ADMIN, PlayerRoles.PLAYER))
                 .build();
 
+        Player admin2 = Player.builder()
+                .id(UUID.fromString("99baaba9-96d7-40c4-8e04-4e0421a3a374"))
+                .login("admin2")
+                .password("admin2")
+                .username("admin2")
+                .birthDate(LocalDate.of(2004, 1, 1))
+                .heroName("admin2")
+                .roles(List.of(PlayerRoles.ADMIN, PlayerRoles.PLAYER))
+                .build();
+
         Player warrior = Player.builder()
                 .id(UUID.fromString("88dd8d51-8456-42ce-b6a0-61b2ed3e5e21"))
                 .login("warrior@game.com")
@@ -197,6 +207,7 @@ public class InitializeData {
                 playerService.create(warrior);
                 playerService.create(mage);
                 playerService.create(admin);
+                playerService.create(admin2);
                 playerService.create(assassin);
                 playerService.create(archer);
 

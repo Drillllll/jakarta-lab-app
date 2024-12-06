@@ -24,6 +24,7 @@ public class WeaponToEditModelFunction  implements Function<Weapon, WeaponEditMo
                 .value(entity.getValue())
                 .damage(entity.getDamage())
                 .player(playerToModelFunction.apply(entity.getPlayer()))
+                .version(entity.getVersion())
                 .build();
     }
 }

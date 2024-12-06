@@ -4,6 +4,7 @@ import com.demo.rest.modules.weapontype.model.WeaponTypesModel;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,6 +28,11 @@ public class WeaponsModel implements Serializable{
 
         private UUID id;
         private String name;
+
+        private Long version;
+
+        private LocalDateTime creationDateTime;
+        private LocalDateTime updateDateTime;
 
     }
 

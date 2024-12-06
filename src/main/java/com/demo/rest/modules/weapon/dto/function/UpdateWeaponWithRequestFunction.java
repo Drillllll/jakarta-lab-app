@@ -17,6 +17,9 @@ public class UpdateWeaponWithRequestFunction implements BiFunction<Weapon, Patch
                 .value(request.getValue())
                 .weight(request.getWeight())
                 .player(entity.getPlayer())
+                .version(request.getVersion())
+                .creationDateTime(entity.getCreationDateTime())
+                .updateDateTime(entity.getUpdateDateTime())
                 .weaponType(entity.getWeaponType())
                 .build();
     }
